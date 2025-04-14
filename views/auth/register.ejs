@@ -1,0 +1,48 @@
+<div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card shadow">
+        <div class="card-body p-5">
+          <div class="text-center mb-4">
+            <h2 class="card-title"><i class="fas fa-user-plus me-2"></i>Register</h2>
+            <p class="text-muted">Create a new account to access all features</p>
+          </div>
+          
+          <form action="/auth/register" method="POST">
+            <div class="mb-3">
+              <label for="username" class="form-label">Username</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="fas fa-user"></i></span>
+                <input type="text" class="form-control" id="username" name="username" placeholder="Choose a username" minlength="3" maxlength="30" required>
+              </div>
+              <div class="form-text">Username must be 3-30 characters long</div>
+            </div>
+            
+            <div class="mb-3">
+              <label for="email" class="form-label">Email address</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>
+              </div>
+            </div>
+            
+            <div class="mb-4">
+              <label for="password" class="form-label">Password</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                <input type="password" class="form-control" id="password" name="password" placeholder="Create a password" minlength="6" required>
+              </div>
+              <div class="form-text">Password must be at least 6 characters long</div>
+            </div>
+            
+            <div class="d-grid">
+              <button type="submit" class="btn btn-primary btn-lg">Register</button>
+            </div>
+            
+            <div class="mt-4 text-center">
+              <p>Already have an account? <a href="/auth/login">Login</a></p>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>

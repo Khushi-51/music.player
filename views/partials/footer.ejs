@@ -1,0 +1,36 @@
+<footer class="bg-dark text-white py-4 mt-5">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4 mb-3">
+          <h5><i class="fas fa-music me-2"></i>Music Player</h5>
+          <p>A full-stack music streaming application built with Node.js, Express, MongoDB, and EJS.</p>
+        </div>
+        <div class="col-md-4 mb-3">
+          <h5>Quick Links</h5>
+          <ul class="list-unstyled">
+            <li><a href="/" class="text-white"><i class="fas fa-home me-1"></i>Home</a></li>
+            <li><a href="/songs" class="text-white"><i class="fas fa-music me-1"></i>Songs</a></li>
+            <li><a href="/playlists" class="text-white"><i class="fas fa-list me-1"></i>Playlists</a></li>
+            <% if (locals.user) { %>
+              <li><a href="/users/profile" class="text-white"><i class="fas fa-user-circle me-1"></i>Profile</a></li>
+            <% } else { %>
+              <li><a href="/auth/login" class="text-white"><i class="fas fa-sign-in-alt me-1"></i>Login</a></li>
+            <% } %>
+          </ul>
+        </div>
+        <div class="col-md-4">
+          <h5>Connect</h5>
+          <div class="d-flex gap-3">
+            <a href="#" class="text-white fs-4"><i class="fab fa-facebook"></i></a>
+            <a href="#" class="text-white fs-4"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="text-white fs-4"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="text-white fs-4"><i class="fab fa-github"></i></a>
+          </div>
+        </div>
+      </div>
+      <hr>
+      <div class="text-center">
+        <p>&copy; <%= new Date().getFullYear() %> Music Player. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>

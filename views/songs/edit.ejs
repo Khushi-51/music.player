@@ -1,0 +1,78 @@
+<div class="container mt-4">
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="card">
+          <div class="card-header">
+            <h2>Edit Song</h2>
+          </div>
+          <div class="card-body">
+            <form action="/songs/<%= song._id %>?_method=PUT" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
+              <div class="mb-3">
+                <label for="title" class="form-label">Song Title</label>
+                <input type="text" class="form-control" id="title" name="title" value="<%= song.title %>" required>
+                <div class="invalid-feedback">
+                  Please provide a song title.
+                </div>
+              </div>
+              
+              <div class="mb-3">
+                <label for="artist" class="form-label">Artist</label>
+                <input type="text" class="form-control" id="artist" name="artist" value="<%= song.artist %>" required>
+                <div class="invalid-feedback">
+                  Please provide an artist name.
+                </div>
+              </div>
+              
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="album" class="form-label">Album</label>
+                  <input type="text" class="form-control" id="album" name="album" value="<%= song.album %>">
+                </div>
+                <div class="col-md-6">
+                  <label for="year" class="form-label">Year</label>
+                  <input type="number" class="form-control" id="year" name="year" value="<%= song.year %>">
+                </div>
+              </div>
+              
+              <div class="mb-3">
+                <label for="genre" class="form-label">Genre</label>
+                <select class="form-select" id="genre" name="genre">
+                  <option value="Pop" <%= song.genre === 'Pop' ? 'selected' : '' %>>Pop</option>
+                  <option value="Rock" <%= song.genre === 'Rock' ? 'selected' : '' %>>Rock</option>
+                  <option value="Hip Hop" <%= song.genre === 'Hip Hop' ? 'selected' : '' %>>Hip Hop</option>
+                  <option value="Electronic" <%= song.genre === 'Electronic' ? 'selected' : '' %>>Electronic</option>
+                  <option value="Jazz" <%= song.genre === 'Jazz' ? 'selected' : '' %>>Jazz</option>
+                  <option value="Classical" <%= song.genre === 'Classical' ? 'selected' : '' %>>Classical</option>
+                  <option value="R&B" <%= song.genre === 'R&B' ? 'selected' : '' %>>R&B</option>
+                  <option value="Country" <%= song.genre === 'Country' ? 'selected' : '' %>>Country</option>
+                  <option value="Other" <%= song.genre === 'Other' ? 'selected' : '' %>>Other</option>
+                </select>
+              </div>
+              
+              <div class="mb-3">
+                <label for="coverImage" class="form-label">Cover Image</label>
+                <input type="file" class="form-control" id="coverImage" name="coverImage" accept="image/*">
+                <div class="form-text">Leave empty to keep the current cover image.</div>
+                
+                <div class="mt-2">
+                  <p>Current Cover:</p>
+                  <img src="<%= song.coverImage %>" alt="Current cover" style="max-width: 200px; max-height: 200px;" class="img-thumbnail">
+                </div>
+              </div>
+              
+              <div class="mb-3">
+                <label for="lyrics" class="form-label">Lyrics</label>
+                <textarea class="form-control" id="lyrics" name="lyrics" rows="5"><%= song.lyrics %></textarea>
+              </div>
+              
+              <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-primary">Update Song</button>
+                <a href="/songs/<%= song._id %>" class="btn btn-outline-secondary">Cancel</a>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

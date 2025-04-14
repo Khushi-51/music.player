@@ -1,0 +1,82 @@
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header">
+          <h2>Upload New Song</h2>
+        </div>
+        <div class="card-body">
+          <form action="/songs" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
+            <div class="mb-3">
+              <label for="title" class="form-label">Song Title</label>
+              <input type="text" class="form-control" id="title" name="title" required>
+              <div class="invalid-feedback">
+                Please provide a song title.
+              </div>
+            </div>
+            
+            <div class="mb-3">
+              <label for="artist" class="form-label">Artist</label>
+              <input type="text" class="form-control" id="artist" name="artist" required>
+              <div class="invalid-feedback">
+                Please provide an artist name.
+              </div>
+            </div>
+            
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="album" class="form-label">Album</label>
+                <input type="text" class="form-control" id="album" name="album" value="Single">
+              </div>
+              <div class="col-md-6">
+                <label for="year" class="form-label">Year</label>
+                <input type="number" class="form-control" id="year" name="year" value="<%= new Date().getFullYear() %>">
+              </div>
+            </div>
+            
+            <div class="mb-3">
+              <label for="genre" class="form-label">Genre</label>
+              <select class="form-select" id="genre" name="genre">
+                <option value="Pop">Pop</option>
+                <option value="Rock">Rock</option>
+                <option value="Hip Hop">Hip Hop</option>
+                <option value="Electronic">Electronic</option>
+                <option value="Jazz">Jazz</option>
+                <option value="Classical">Classical</option>
+                <option value="R&B">R&B</option>
+                <option value="Country">Country</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            
+            <div class="mb-3">
+              <label for="songFile" class="form-label">Song File</label>
+              <input type="file" class="form-control" id="songFile" name="songFile" accept="audio/mpeg,audio/mp3,audio/wav,audio/ogg" required>
+              <div class="form-text">Supported formats: MP3, WAV, OGG (Max: 20MB)</div>
+              <div class="invalid-feedback">
+                Please select a song file.
+              </div>
+            </div>
+            
+            <div class="mb-3">
+              <label for="coverImage" class="form-label">Cover Image</label>
+              <input type="file" class="form-control" id="coverImage" name="coverImage" accept="image/*">
+              <div class="form-text">Optional. If not provided, a default cover will be used.</div>
+            </div>
+            
+            <div class="mb-3">
+              <label for="lyrics" class="form-label">Lyrics</label>
+              <textarea class="form-control" id="lyrics" name="lyrics" rows="5"></textarea>
+              <div class="form-text">Optional. Add song lyrics if available.</div>
+            </div>
+            
+            <div class="d-grid gap-2">
+              <button type="submit" class="btn btn-primary">Upload Song</button>
+              <a href="/songs" class="btn btn-outline-secondary">Cancel</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

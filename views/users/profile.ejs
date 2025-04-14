@@ -1,0 +1,61 @@
+<div class="container mt-4">
+    <div class="profile-header text-center">
+      <img src="<%= user.profileImage %>" alt="<%= user.username %>" class="profile-image mb-3">
+      <h1><%= user.username %></h1>
+      <p><%= user.bio || 'No bio yet' %></p>
+    </div>
+    
+    <div class="row">
+      <div class="col-md-6 offset-md-3">
+        <div class="card mb-4">
+          <div class="card-header">
+            <h3>Profile Information</h3>
+          </div>
+          <div class="card-body">
+            <form action="/users/profile?_method=PUT" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
+              <div class="mb-3">
+                <label for="username" class="form-label">Username</label>
+                <input type="text" class="form-control" id="username" name="username" value="<%= user.username %>" disabled>
+                <div class="form-text">Username cannot be changed.</div>
+              </div>
+              
+              <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" name="email" value="<%= user.email %>" disabled>
+                <div class="form-text">Email cannot be changed.</div>
+              </div>
+              
+              <div class="mb-3">
+                <label for="bio" class="form-label">Bio</label>
+                <textarea class="form-control" id="bio" name="bio" rows="3" maxlength="200"><%= user.bio %></textarea>
+                <div class="form-text">Tell others about yourself (max 200 characters).</div>
+              </div>
+              
+              <div class="mb-3">
+                <label for="profileImage" class="form-label">Profile Image</label>
+                <input type="file" class="form-control" id="profileImage" name="profileImage" accept="image/*">
+                <div class="form-text">Upload a new profile image (JPG, PNG, GIF).</div>
+              </div>
+              
+              <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-primary">Update Profile</button>
+              </div>
+            </form>
+          </div>
+        </div>
+        
+        <div class="card mb-4">
+          <div class="card-header">
+            <h3>Account Actions</h3>
+          </div>
+          <div class="card-body">
+            <div class="d-grid gap-2">
+              <a href="/playlists/user/my-playlists" class="btn btn-outline-primary">My Playlists</a>
+              <a href="/auth/logout" class="btn btn-outline-danger">Logout</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

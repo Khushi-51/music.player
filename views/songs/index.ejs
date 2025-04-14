@@ -1,0 +1,108 @@
+
+    <div class="row mb-4">
+    <div class="col-md-8">
+      <h1><i class="fas fa-music me-2"></i>All Songs</h1>
+    </div>
+    <div class="col-md-4 text-md-end">
+      <% if (locals.user) { %>
+        <a href="/songs/upload/new" class="btn btn-primary"><i class="fas fa-upload me-2"></i>Upload Song</a>
+      <% } %>
+    </div>
+  </div>
+  
+  <!-- Search and Filter Form -->
+  <div class="card mb-4">
+    <div class="card-body">
+      <form action="/songs" method="GET">
+        <div class="row g-3">
+          <div class="col-md-6">
+            <div class="input-group">
+              <span class="input-group-text"><i class="fas fa-search"></i></span>
+              <input type="text" class="form-control" name="search" placeholder="Search songs, artists, albums...">
+            </div>
+          </div>
+          <div class="col-md-3">
+            <select name="genre" class="form-select">
+              <option value="">All Genres</option>
+              <option value="Pop">Pop</option>
+              <option value="Rock">Rock</option>
+              <option value="Hip Hop">Hip Hop</option>
+              <option value="Electronic">Electronic</option>
+              <option value="Jazz">Jazz</option>
+              <option value="Classical">Classical</option>
+              <option value="Country">Country</option>
+              <option value="R&B">R&B</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div class="col-md-3">
+            <button type="submit" class="btn btn-primary w-100">Apply Filters</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+  <!-- Song List -->
+  <div class="row">
+    <% if (songs && songs.length > 0) { %>
+      <% songs.forEach(song => { %>
+        <div class="col-md-6 col-lg-4 mb-4">
+          <div class="card h-100 shadow-sm">
+            <img src="<%= song.coverImage %>" class="card-img-top" alt="<%= song.title %>" style="height: 200px; object-fit: cover;">
+            <div class="card-body">
+              <h5 class="card-title text-truncate"><%= song.title %></h5>
+              <p class="card-text">
+                <small class="text-muted"><i class="fas fa-user me-1"></i><%= song.artist %></small><br>
+                <small class="text-muted"><i class="fas fa-compact-disc me-1"></i><%= song.album || 'Single' %></small>
+              </p>
+              <div class="d-flex justify-content-between align-items-center">
+                <a href="/songs/<%= song._id %>" class="btn btn-outline-primary">
+                  <i class="fas fa-play me-1"></i>Play
+                </a>
+                <small class="text-muted"><i class="fas fa-headphones me-1"></i><%= song.playCount %> plays</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% }) %>
+    <% } else { %>
+      <div class="col-12 text-center py-5">
+        <div class="py-5">
+          <i class="fas fa-music fa-4x text-muted mb-3"></i>
+          <h3>No songs found</h3>
+          <p class="text-muted">Try adjusting your search or filters, or upload a new song.</p>
+          <% if (locals.user) { %>
+            <a href="/songs/upload/new" class="btn btn-primary mt-3"><i class="fas fa-upload me-2"></i>Upload New Song</a>
+          <% } %>
+        </div>
+      </div>
+    <% } %>
+  </div>
+  
+  <!-- Pagination -->
+  <% if (songs && songs.length > 0) { %>
+    <nav aria-label="Page navigation" class="my-4">
+      <ul class="pagination justify-content-center">
+        <li class="page-item <%= !locals.pagination || !locals.pagination.hasPrevPage ? 'disabled' : '' %>">
+          <a class="page-link" href="/songs?page=<%= (locals.pagination && locals.pagination.page > 1) ? locals.pagination.page - 1 : 1 %>" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+        
+        <% if (locals.pagination) { %>
+          <% for (let i = 1; i <= locals.pagination.totalPages; i++) { %>
+            <li class="page-item <%= locals.pagination.page === i ? 'active' : '' %>">
+              <a class="page-link" href="/songs?page=<%= i %>"><%= i %></a>
+            </li>
+          <% } %>
+        <% } %>
+        
+        <li class="page-item <%= !locals.pagination || !locals.pagination.hasNextPage ? 'disabled' : '' %>">
+          <a class="page-link" href="/songs?page=<%= (locals.pagination && locals.pagination.hasNextPage) ? locals.pagination.page + 1 : (locals.pagination ? locals.pagination.totalPages : 1) %>" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  <% } %>

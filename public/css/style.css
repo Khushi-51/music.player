@@ -1,0 +1,139 @@
+/* Global Styles */
+:root {
+  --primary-color: #242a4d;
+  --secondary-color: #f50057;
+  --dark-color: #212121;
+  --light-color: #f5f5f5;
+  --success-color: #4caf50;
+  --warning-color: #ff9800;
+  --danger-color: #f44336;
+}
+
+body {
+  font-family: 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f8f9fa;
+  color: #333;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+}
+
+/* Navigation */
+.navbar-brand {
+  font-weight: 700;
+  font-size: 1.5rem;
+}
+
+/* Cards */
+.card {
+  border-radius: 8px;
+  overflow: hidden;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Audio Player */
+audio {
+  border-radius: 30px;
+  height: 40px;
+}
+
+audio::-webkit-media-controls-panel {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+audio::-webkit-media-controls-play-button {
+  background-color: white;
+  border-radius: 50%;
+}
+
+/* Song items */
+.song-item {
+  transition: background-color 0.2s;
+}
+
+.song-item:hover {
+  background-color: rgba(0, 0, 0, 0.03);
+}
+
+/* Custom buttons */
+.btn-playlist {
+  background-color: var(--secondary-color);
+  color: white;
+}
+
+.btn-playlist:hover {
+  background-color: #d1004a;
+  color: white;
+}
+
+/* Playlist cover images */
+.playlist-cover {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+/* Profile section */
+.profile-header {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 2rem 0;
+  margin-bottom: 2rem;
+}
+
+.profile-image {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 5px solid white;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Song player details */
+.song-details {
+  padding: 1rem;
+  background-color: rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+}
+
+/* Lyrics container */
+.lyrics-container {
+  background-color: rgba(0, 0, 0, 0.03);
+  padding: 1rem;
+  border-radius: 8px;
+  font-style: italic;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .profile-image {
+    width: 100px;
+    height: 100px;
+  }
+
+  .card-title {
+    font-size: 1.2rem;
+  }
+}
+
+/* Custom animations */
+.fade-in {
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
