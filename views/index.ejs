@@ -1,159 +1,69 @@
-<div class="container mt-4">
-  <!-- Hero Section -->
-  <div class="row align-items-center mb-5">
-    <div class="col-md-6">
-      <h1 class="display-4 fw-bold">Your Music, Anywhere</h1>
-      <p class="lead">Discover, upload, and share your favorite music with friends. Create playlists and enjoy a seamless listening experience.</p>
-      <div class="d-grid gap-2 d-md-flex justify-content-md-start">
-        <a href="/songs" class="btn btn-primary btn-lg px-4 me-md-2">Explore Songs</a>
-        <a href="/playlists" class="btn btn-outline-secondary btn-lg px-4">Browse Playlists</a>
-      </div>
-    </div>
-    <div class="col-md-6">
-      <img src="/uploads/images/default-cover.png" alt="Music Player" class="img-fluid rounded-3 shadow">
+
+<div class="row">
+  <div class="col-md-8 mx-auto text-center">
+    <div class="py-5">
+      <h1 class="display-4 mb-4"><i class="fas fa-music me-3"></i>Welcome to Music Player</h1>
+      <p class="lead mb-4">Stream your favorite music, create custom playlists, and discover new artists!</p>
+      
+      <% if (!locals.user) { %>
+        <div class="d-flex justify-content-center gap-3">
+          <a href="/auth/login" class="btn btn-primary btn-lg"><i class="fas fa-sign-in-alt me-2"></i>Login</a>
+          <a href="/auth/register" class="btn btn-outline-primary btn-lg"><i class="fas fa-user-plus me-2"></i>Register</a>
+        </div>
+      <% } else { %>
+        <div class="d-flex justify-content-center gap-3">
+          <a href="/songs" class="btn btn-primary btn-lg"><i class="fas fa-music me-2"></i>Browse Songs</a>
+          <a href="/songs/upload/new" class="btn btn-outline-primary btn-lg"><i class="fas fa-upload me-2"></i>Upload Music</a>
+        </div>
+      <% } %>
     </div>
   </div>
+</div>
 
-  <!-- Featured Songs Section -->
-  <div class="row mb-5">
-    <div class="col-12">
-      <h2 class="border-bottom pb-2 mb-4">Featured Songs</h2>
-    </div>
-    
-    <div class="col-12">
-      <div class="row" id="featuredSongs">
-        <div class="col-12 text-center">
-          <div class="spinner-border text-primary" role="status">
-            <span class="visually-hidden">Loading...</span>
+<div class="row mt-5">
+  <div class="col-12">
+    <h2 class="text-center mb-4">Features</h2>
+    <div class="row">
+      <div class="col-md-4 mb-4">
+        <div class="card h-100">
+          <div class="card-body text-center">
+            <i class="fas fa-headphones-alt text-primary fa-3x mb-3"></i>
+            <h5 class="card-title">Stream Music</h5>
+            <p class="card-text">Listen to your favorite songs anytime, anywhere with our responsive web player.</p>
           </div>
         </div>
       </div>
-    </div>
-  </div>
-
-  <!-- Popular Playlists Section -->
-  <div class="row mb-5">
-    <div class="col-12">
-      <h2 class="border-bottom pb-2 mb-4">Popular Playlists</h2>
-    </div>
-    
-    <div class="col-12">
-      <div class="row" id="popularPlaylists">
-        <div class="col-12 text-center">
-          <div class="spinner-border text-primary" role="status">
-            <span class="visually-hidden">Loading...</span>
+      <div class="col-md-4 mb-4">
+        <div class="card h-100">
+          <div class="card-body text-center">
+            <i class="fas fa-list text-primary fa-3x mb-3"></i>
+            <h5 class="card-title">Create Playlists</h5>
+            <p class="card-text">Organize your music with custom playlists that you can share with others.</p>
           </div>
         </div>
       </div>
-    </div>
-  </div>
-
-  <!-- How It Works Section -->
-  <div class="row mb-5">
-    <div class="col-12">
-      <h2 class="text-center mb-4">How It Works</h2>
-    </div>
-    
-    <div class="col-md-4 mb-4">
-      <div class="card h-100 text-center">
-        <div class="card-body">
-          <i class="bi bi-cloud-upload fs-1 text-primary mb-3"></i>
-          <h3 class="card-title">Upload</h3>
-          <p class="card-text">Share your music with the world. Upload your songs in various formats.</p>
-        </div>
-      </div>
-    </div>
-    
-    <div class="col-md-4 mb-4">
-      <div class="card h-100 text-center">
-        <div class="card-body">
-          <i class="bi bi-collection-play fs-1 text-primary mb-3"></i>
-          <h3 class="card-title">Create</h3>
-          <p class="card-text">Build custom playlists with your favorite songs and share them with friends.</p>
-        </div>
-      </div>
-    </div>
-    
-    <div class="col-md-4 mb-4">
-      <div class="card h-100 text-center">
-        <div class="card-body">
-          <i class="bi bi-headphones fs-1 text-primary mb-3"></i>
-          <h3 class="card-title">Listen</h3>
-          <p class="card-text">Enjoy your music anywhere, anytime with our easy-to-use player.</p>
+      <div class="col-md-4 mb-4">
+        <div class="card h-100">
+          <div class="card-body text-center">
+            <i class="fas fa-upload text-primary fa-3x mb-3"></i>
+            <h5 class="card-title">Upload Songs</h5>
+            <p class="card-text">Add your own music to our platform and access it from any device.</p>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    // Fetch featured songs
-    fetch('/songs?limit=6')
-      .then(response => response.json())
-      .then(data => {
-        const featuredSongsContainer = document.getElementById('featuredSongs');
-        
-        if (data.data && data.data.length > 0) {
-          let html = '';
-          
-          data.data.forEach(song => {
-            html += `
-              <div class="col-md-4 mb-4">
-                <div class="card song-card h-100">
-                  <img src="${song.coverImage}" class="card-img-top song-cover" alt="${song.title}">
-                  <div class="card-body">
-                    <h5 class="card-title">${song.title}</h5>
-                    <p class="card-text text-muted">${song.artist}</p>
-                    <a href="/songs/${song._id}" class="btn btn-primary stretched-link">Listen</a>
-                  </div>
-                </div>
-              </div>
-            `;
-          });
-          
-          featuredSongsContainer.innerHTML = html;
-        } else {
-          featuredSongsContainer.innerHTML = '<div class="col-12"><div class="alert alert-info">No songs available yet.</div></div>';
-        }
-      })
-      .catch(error => {
-        console.error('Error fetching songs:', error);
-        document.getElementById('featuredSongs').innerHTML = '<div class="col-12"><div class="alert alert-danger">Failed to load songs.</div></div>';
-      });
-    
-    // Fetch popular playlists
-    fetch('/playlists?limit=3')
-      .then(response => response.json())
-      .then(data => {
-        const popularPlaylistsContainer = document.getElementById('popularPlaylists');
-        
-        if (data.data && data.data.length > 0) {
-          let html = '';
-          
-          data.data.forEach(playlist => {
-            html += `
-              <div class="col-md-4 mb-4">
-                <div class="card playlist-card h-100">
-                  <img src="${playlist.coverImage}" class="card-img-top playlist-cover" alt="${playlist.name}">
-                  <div class="card-body">
-                    <h5 class="card-title">${playlist.name}</h5>
-                    <p class="card-text text-muted">By ${playlist.createdBy.username}</p>
-                    <a href="/playlists/${playlist._id}" class="btn btn-playlist stretched-link">View Playlist</a>
-                  </div>
-                </div>
-              </div>
-            `;
-          });
-          
-          popularPlaylistsContainer.innerHTML = html;
-        } else {
-          popularPlaylistsContainer.innerHTML = '<div class="col-12"><div class="alert alert-info">No playlists available yet.</div></div>';
-        }
-      })
-      .catch(error => {
-        console.error('Error fetching playlists:', error);
-        document.getElementById('popularPlaylists').innerHTML = '<div class="col-12"><div class="alert alert-danger">Failed to load playlists.</div></div>';
-      });
-  });
-</script>
+<div class="row mt-5">
+  <div class="col-12 text-center">
+    <h2 class="mb-4">Get Started Today</h2>
+    <p class="lead">Join thousands of music lovers who are already enjoying our platform.</p>
+    <% if (!locals.user) { %>
+      <a href="/auth/register" class="btn btn-primary btn-lg mt-3">Sign Up for Free</a>
+    <% } else { %>
+      <a href="/songs" class="btn btn-primary btn-lg mt-3">Start Listening Now</a>
+    <% } %>
+  </div>
+</div>
+</div>
