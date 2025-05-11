@@ -179,7 +179,7 @@ const getProfile = async (req, res) => {
 
   // Determine response based on content type
   if (req.accepts('html')) {
-    return res.render('profile', {
+    return res.render('auth/users/profile', {
       title: 'Your Profile',
       user
     });

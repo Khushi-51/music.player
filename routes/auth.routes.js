@@ -11,6 +11,6 @@ router.get('/login', renderLogin);
 router.post('/register', register);
 router.post('/login', login);
 router.get('/logout', logout);
-router.get('/profile', protect, getProfile);
+router.get('/users/profile', protect, getProfile);
 
 module.exports = router;

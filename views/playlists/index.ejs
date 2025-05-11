@@ -1,37 +1,38 @@
 <div class="container mt-4">
-    <div class="row mb-4">
-      <div class="col-md-8">
-        <h1>All Playlists</h1>
-      </div>
-      <% if (user) { %>
-      <div class="col-md-4 text-end">
-        <a href="/playlists/create/new" class="btn btn-primary">Create New Playlist</a>
-      </div>
-      <% } %>
+  <div class="row mb-4">
+    <div class="col-md-8">
+      <h1>All Playlists</h1>
     </div>
-  
-    <% if (playlists && playlists.length > 0) { %>
-      <div class="row">
-        <% playlists.forEach(playlist => { %>
-          <div class="col-md-4 mb-4">
-            <div class="card playlist-card">
-              <img src="<%= playlist.coverImage %>" class="card-img-top playlist-cover" alt="<%= playlist.name %>">
-              <div class="card-body">
-                <h5 class="card-title"><%= playlist.name %></h5>
-                <p class="card-text text-muted">
-                  <small>Created by: <%= playlist.createdBy.username %></small>
-                </p>
-                <p class="card-text"><%= playlist.description ? playlist.description.substring(0, 100) + (playlist.description.length > 100 ? '...' : '') : 'No description' %></p>
-                <a href="/playlists/<%= playlist._id %>" class="btn btn-playlist">View Playlist</a>
-              </div>
-            </div>
-          </div>
-        <% }); %>
-      </div>
-    <% } else { %>
-      <div class="alert alert-info">
-        <p>No playlists found. Be the first to create one!</p>
-      </div>
+    <% if (user) { %>
+    <div class="col-md-4 text-end">
+      <a href="/playlists/create/new" class="btn btn-primary">Create New Playlist</a>
+    </div>
     <% } %>
   </div>
-  
+
+  <% if (playlists && playlists.length > 0) { %>
+    <div class="row">
+      <% playlists.forEach(playlist => { %>
+        <div class="col-md-4 mb-4">
+          <div class="card playlist-card">
+            <img src="<%= playlist.coverImage %>" class="card-img-top playlist-cover" alt="<%= playlist.name %>">
+            <div class="card-body">
+              <h5 class="card-title"><%= playlist.name %></h5>
+              <p class="card-text text-muted">
+                <small>Created by: <%= playlist.user?.username || 'Unknown' %></small>
+              </p>
+              <p class="card-text">
+                <%= playlist.description ? playlist.description.substring(0, 100) + (playlist.description.length > 100 ? '...' : '') : 'No description' %>
+              </p>
+              <a href="/playlists/<%= playlist._id %>" class="btn btn-playlist">View Playlist</a>
+            </div>
+          </div>
+        </div>
+      <% }); %>
+    </div>
+  <% } else { %>
+    <div class="alert alert-info">
+      <p>No playlists found. Be the first to create one!</p>
+    </div>
+  <% } %>
+</div>

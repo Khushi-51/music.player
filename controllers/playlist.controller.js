@@ -26,7 +26,7 @@ const getAllPlaylists = async (req, res, next) => {
       .populate('createdBy', 'username');
 
     // Determine response based on content type
-    if (req.accepts('ejs')) {
+    if (req.accepts('html')) {
       return res.render('playlists/index', {
         title: 'All Playlists',
         playlists,
@@ -118,6 +118,7 @@ const createPlaylist = async (req, res, next) => {
       name,
       description,
       isPublic: isPublic === 'true' || isPublic === true,
+      user: req.user._id,
       createdBy: req.user._id
     });
 

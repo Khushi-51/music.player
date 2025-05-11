@@ -19,18 +19,14 @@ const getAllSongs = async (req, res, next) => {
 
     // Add search filter if provided
     if (search) {
-      filter.$text = { $search: search };
-    }
-
-    // Add genre filter if provided
-    if (genre) {
-      filter.genre = genre;
-    }
-
-    // Add artist filter if provided
-    if (artist) {
-      filter.artist = artist;
-    }
+  const regex = new RegExp(search, 'i');
+  filter.$or = [
+    { title: regex },
+    { artist: regex },
+    { album: regex },
+    { genre: regex }
+  ];
+}
 
     // Get total songs count for pagination
     const totalSongs = await Song.countDocuments(filter);
