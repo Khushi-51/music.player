@@ -1,82 +1,600 @@
-<div class="container mt-4">
-  <div class="row justify-content-center">
-    <div class="col-md-8">
-      <div class="card">
-        <div class="card-header">
-          <h2>Upload New Song</h2>
+<div class="page-container">
+  <div class="upload-container">
+    <div class="upload-card">
+      <div class="upload-header-wrapper">
+        <div class="upload-header">
+          <h2><i class="fas fa-cloud-upload-alt"></i> Upload Music</h2>
+          <div class="progress-wrapper">
+            <div class="progress-bar" id="uploadProgress"></div>
+          </div>
         </div>
-        <div class="card-body">
-          <form action="/songs" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
-            <div class="mb-3">
-              <label for="title" class="form-label">Song Title</label>
-              <input type="text" class="form-control" id="title" name="title" required>
-              <div class="invalid-feedback">
-                Please provide a song title.
+      </div>
+
+      <div class="upload-body">
+        <form action="/songs" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate id="uploadForm">
+          <!-- Main Upload Section -->
+          <div class="upload-grid">
+            <!-- Left Column - File Uploads -->
+            <div class="upload-section">
+              <div class="file-preview-area" id="songPreview">
+                <div class="file-upload-area" id="songUploadArea">
+                  <input type="file" class="file-input" id="songFile" name="songFile" 
+                    accept="audio/mpeg,audio/mp3,audio/wav,audio/ogg" required>
+                  <div class="upload-content">
+                    <i class="fas fa-music upload-icon pulse"></i>
+                    <p>Drop your track here</p>
+                    <small>MP3, WAV, OGG (Max: 20MB)</small>
+                  </div>
+                </div>
+                <div class="preview-player" style="display: none;">
+                  <audio id="audioPreview" controls></audio>
+                </div>
+              </div>
+
+              <div class="file-preview-area" id="coverPreview">
+                <div class="file-upload-area" id="coverUploadArea">
+                  <input type="file" class="file-input" id="coverImage" name="coverImage" 
+                    accept="image/*">
+                  <div class="upload-content">
+                    <i class="fas fa-image upload-icon"></i>
+                    <p>Add cover art</p>
+                    <small>JPG, PNG (Optional)</small>
+                  </div>
+                </div>
+                <div class="image-preview" style="display: none;">
+                  <img id="coverPreviewImg" src="" alt="Cover Preview">
+                </div>
               </div>
             </div>
-            
-            <div class="mb-3">
-              <label for="artist" class="form-label">Artist</label>
-              <input type="text" class="form-control" id="artist" name="artist" required>
-              <div class="invalid-feedback">
-                Please provide an artist name.
+
+            <!-- Right Column - Song Details -->
+            <div class="song-details">
+              <div class="input-group floating">
+                <input type="text" class="form-control" id="title" name="title" required placeholder=" ">
+                <label for="title">Track Title*</label>
+              </div>
+
+              <div class="input-group floating">
+                <input type="text" class="form-control" id="artist" name="artist" required placeholder=" ">
+                <label for="artist">Artist Name*</label>
+              </div>
+
+              <div class="input-row">
+                <div class="input-group floating">
+                  <select class="form-select" id="genre" name="genre" required>
+                    <option value="" disabled selected>Select Genre</option>
+                    <option value="Pop">Pop</option>
+                    <option value="Rock">Rock</option>
+                    <option value="Hip Hop">Hip Hop</option>
+                    <option value="R&B">R&B</option>
+                    <option value="Jazz">Jazz</option>
+                    <option value="Electronic">Electronic</option>
+                    <option value="Classical">Classical</option>
+                    <option value="Other">Other</option>
+                  </select>
+                  <label for="genre">Genre*</label>
+                </div>
+                <div class="input-group floating">
+                  <input type="number" class="form-control" id="year" name="year" 
+                    value="<%= new Date().getFullYear() %>" min="1900" placeholder=" ">
+                  <label for="year">Year</label>
+                </div>
+              </div>
+
+              <div class="input-group floating">
+                <textarea class="form-control" id="lyrics" name="lyrics" rows="4" placeholder=" "></textarea>
+                <label for="lyrics">Lyrics (Optional)</label>
               </div>
             </div>
-            
-            <div class="row mb-3">
-              <div class="col-md-6">
-                <label for="album" class="form-label">Album</label>
-                <input type="text" class="form-control" id="album" name="album" value="Single">
-              </div>
-              <div class="col-md-6">
-                <label for="year" class="form-label">Year</label>
-                <input type="number" class="form-control" id="year" name="year" value="<%= new Date().getFullYear() %>">
-              </div>
-            </div>
-            
-            <div class="mb-3">
-              <label for="genre" class="form-label">Genre</label>
-              <select class="form-select" id="genre" name="genre">
-                <option value="Pop">Pop</option>
-                <option value="Rock">Rock</option>
-                <option value="Hip Hop">Hip Hop</option>
-                <option value="Electronic">Electronic</option>
-                <option value="Jazz">Jazz</option>
-                <option value="Classical">Classical</option>
-                <option value="R&B">R&B</option>
-                <option value="Country">Country</option>
-                <option value="Other">Other</option>
-              </select>
-            </div>
-            
-            <div class="mb-3">
-              <label for="songFile" class="form-label">Song File</label>
-              <input type="file" class="form-control" id="songFile" name="songFile" accept="audio/mpeg,audio/mp3,audio/wav,audio/ogg" required>
-              <div class="form-text">Supported formats: MP3, WAV, OGG (Max: 20MB)</div>
-              <div class="invalid-feedback">
-                Please select a song file.
-              </div>
-            </div>
-            
-            <div class="mb-3">
-              <label for="coverImage" class="form-label">Cover Image</label>
-              <input type="file" class="form-control" id="coverImage" name="coverImage" accept="image/*">
-              <div class="form-text">Optional. If not provided, a default cover will be used.</div>
-            </div>
-            
-            <div class="mb-3">
-              <label for="lyrics" class="form-label">Lyrics</label>
-              <textarea class="form-control" id="lyrics" name="lyrics" rows="5"></textarea>
-              <div class="form-text">Optional. Add song lyrics if available.</div>
-            </div>
-            
-            <div class="d-grid gap-2">
-              <button type="submit" class="btn btn-primary">Upload Song</button>
-              <a href="/songs" class="btn btn-outline-secondary">Cancel</a>
-            </div>
-          </form>
-        </div>
+          </div>
+
+          <!-- Submit Section -->
+          <div class="form-actions">
+            <button type="button" class="btn btn-secondary" onclick="window.history.back()">
+              <i class="fas fa-times"></i> Cancel
+            </button>
+            <button type="submit" class="btn btn-primary" id="uploadButton">
+              <i class="fas fa-cloud-upload-alt"></i> Upload Track
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
 </div>
+
+<style>
+:root {
+  --waveplay-primary: #8442ff;
+  --waveplay-secondary: #4f46e5;
+  --waveplay-gradient: linear-gradient(135deg, var(--waveplay-primary) 0%, var(--waveplay-secondary) 100%);
+  --waveplay-dark: #121212;
+  --waveplay-dark-lighter: #1E1E1E;
+  --card-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+body {
+  background: var(--waveplay-dark);
+  color: #fff;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.page-container {
+  min-height: calc(100vh - 60px);
+  padding: 80px 0 2rem; /* Added padding-top for fixed header */
+  margin-top: 0; /* Remove default margin */
+  background: var(--waveplay-dark);
+}
+
+.upload-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.upload-card {
+  background: var(--waveplay-dark-lighter);
+  border-radius: 16px;
+  box-shadow: var(--card-shadow);
+  overflow: hidden;
+}
+
+.upload-header-wrapper {
+  position: sticky;
+  top: 0px; /* Adjusted to account for fixed header */
+  z-index: 10;
+}
+
+.upload-header {
+  background: var(--waveplay-gradient);
+  padding: 1.5rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.upload-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+}
+
+.progress-wrapper {
+  flex: 1;
+  max-width: 200px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+  margin-left: 2rem;
+}
+
+.progress-bar {
+  width: 0%;
+  height: 100%;
+  background: #fff;
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+.upload-body {
+  padding: 2rem;
+}
+
+/* Grid Layout */
+.upload-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 2rem;
+}
+
+/* File Upload Areas */
+.upload-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.file-preview-area {
+  position: relative;
+  height: 220px;
+}
+
+.file-upload-area {
+  position: relative;
+  background: rgba(0, 0, 0, 0.2);
+  border: 2px dashed rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 2rem;
+  text-align: center;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.file-upload-area.dragover {
+  border-color: var(--waveplay-primary);
+  background: rgba(132, 66, 255, 0.1);
+  transform: scale(1.02);
+}
+
+.file-input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.upload-content {
+  text-align: center;
+}
+
+.upload-icon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  color: var(--waveplay-primary);
+  display: block;
+}
+
+.upload-icon.pulse {
+  animation: pulse 2s infinite;
+}
+
+.upload-content p {
+  margin: 0.5rem 0;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.upload-content small {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.8rem;
+}
+
+/* Input Styling */
+.input-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.form-control, .form-select {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: #fff;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  height: auto;
+  box-sizing: border-box;
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: var(--waveplay-primary);
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(132, 66, 255, 0.25);
+}
+
+.form-control::placeholder {
+  color: transparent;
+}
+
+/* Floating Labels */
+.input-group.floating {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.input-group.floating label {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--waveplay-dark-lighter);
+  padding: 0 0.5rem;
+  color: rgba(255, 255, 255, 0.6);
+  transition: all 0.2s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.input-group.floating textarea ~ label {
+  top: 1.2rem;
+}
+
+.input-group.floating input:focus ~ label,
+.input-group.floating input:not(:placeholder-shown) ~ label,
+.input-group.floating select:focus ~ label,
+.input-group.floating select:valid ~ label,
+.input-group.floating textarea:focus ~ label,
+.input-group.floating textarea:not(:placeholder-shown) ~ label {
+  top: 0;
+  font-size: 0.8rem;
+  color: var(--waveplay-primary);
+  transform: translateY(-50%);
+}
+
+/* Preview Areas */
+.preview-player,
+.image-preview {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--waveplay-dark-lighter);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.preview-player audio {
+  width: 90%;
+}
+
+.image-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Buttons */
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.btn {
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.btn i {
+  font-size: 0.9rem;
+}
+
+.btn-primary {
+  background: var(--waveplay-gradient);
+  color: white;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(132, 66, 255, 0.4);
+}
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Animations */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .upload-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .file-preview-area {
+    height: 180px;
+  }
+}
+
+@media (max-width: 768px) {
+  .page-container {
+    padding-top: 70px;
+  }
+
+  .upload-header {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+    padding: 1.2rem;
+  }
+  
+  .progress-wrapper {
+    margin-left: 0;
+    max-width: 100%;
+  }
+
+  .input-row {
+    grid-template-columns: 1fr;
+  }
+
+  .form-actions {
+    flex-direction: column-reverse;
+  }
+
+  .btn {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .upload-body {
+    padding: 1.2rem;
+  }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const uploadAreas = document.querySelectorAll('.file-upload-area');
+  const songFile = document.getElementById('songFile');
+  const coverImage = document.getElementById('coverImage');
+  const audioPreview = document.getElementById('audioPreview');
+  const coverPreviewImg = document.getElementById('coverPreviewImg');
+  const uploadForm = document.getElementById('uploadForm');
+  const progressBar = document.getElementById('uploadProgress');
+
+  // Drag and drop functionality
+  uploadAreas.forEach(area => {
+    const input = area.querySelector('input[type="file"]');
+    
+    area.addEventListener('click', () => {
+      input.click();
+    });
+    
+    area.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      area.classList.add('dragover');
+    });
+
+    area.addEventListener('dragleave', () => {
+      area.classList.remove('dragover');
+    });
+
+    area.addEventListener('drop', (e) => {
+      e.preventDefault();
+      area.classList.remove('dragover');
+      if (e.dataTransfer.files.length) {
+        input.files = e.dataTransfer.files;
+        handleFileSelect(input);
+      }
+    });
+  });
+
+  // File input change handlers
+  songFile.addEventListener('change', (e) => handleFileSelect(e.target));
+  coverImage.addEventListener('change', (e) => handleFileSelect(e.target));
+
+  function handleFileSelect(input) {
+    const file = input.files[0];
+    if (!file) return;
+
+    if (input.id === 'songFile') {
+      // Audio preview
+      const url = URL.createObjectURL(file);
+      audioPreview.src = url;
+      document.querySelector('.preview-player').style.display = 'flex';
+      document.getElementById('songUploadArea').style.display = 'none';
+      
+      // Auto-fill title from filename
+      const title = document.getElementById('title');
+      if (!title.value) {
+        title.value = file.name.replace(/\.[^/.]+$/, "");
+        // Trigger the floating label
+        title.dispatchEvent(new Event('input'));
+      }
+    } else if (input.id === 'coverImage') {
+      // Image preview
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        coverPreviewImg.src = e.target.result;
+        document.querySelector('.image-preview').style.display = 'block';
+        document.getElementById('coverUploadArea').style.display = 'none';
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  // Form submission with progress
+  uploadForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    // Validate the form
+    if (!uploadForm.checkValidity()) {
+      uploadForm.classList.add('was-validated');
+      return;
+    }
+    
+    const formData = new FormData(uploadForm);
+    const uploadButton = document.getElementById('uploadButton');
+    
+    // Disable button and show loading state
+    uploadButton.disabled = true;
+    uploadButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Uploading...';
+    
+    try {
+      // Simulate upload progress
+      let progress = 0;
+      const interval = setInterval(() => {
+        progress += Math.random() * 15;
+        if (progress > 95) {
+          clearInterval(interval);
+          progress = 95;
+        }
+        progressBar.style.width = `${progress}%`;
+      }, 300);
+      
+      const response = await fetch('/songs', {
+        method: 'POST',
+        body: formData
+      });
+      
+      if (response.ok) {
+        progressBar.style.width = '100%';
+        const result = await response.json();
+        
+        // Redirect after a short delay to show 100% progress
+        setTimeout(() => {
+          window.location.href = `/songs/${result.data._id}`;
+        }, 500);
+      } else {
+        throw new Error('Upload failed');
+      }
+    } catch (error) {
+      console.error('Upload failed:', error);
+      progressBar.style.width = '0%';
+      uploadButton.disabled = false;
+      uploadButton.innerHTML = '<i class="fas fa-cloud-upload-alt"></i> Try Again';
+    }
+  });
+  
+  // Fix for select element label
+  const genreSelect = document.getElementById('genre');
+  genreSelect.addEventListener('change', function() {
+    if (this.value) {
+      this.classList.add('has-value');
+    } else {
+      this.classList.remove('has-value');
+    }
+  });
+});
+</script>

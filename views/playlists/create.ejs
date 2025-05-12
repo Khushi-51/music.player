@@ -1,20 +1,22 @@
-<div class="container mt-4">
+<div class="container-fluid waveplay-container py-4">
   <div class="row">
-    <div class="col-md-8 mx-auto">
-      <div class="card">
-        <div class="card-header">
-          <h2>Create New Playlist</h2>
+    <div class="col-md-8 col-lg-6 mx-auto">
+      <div class="card bg-dark text-light border-0 shadow">
+        <div class="card-header bg-dark-secondary border-0 py-3">
+          <h2 class="mb-0 text-purple">Create New Playlist</h2>
         </div>
         <div class="card-body">
           <!-- Form matches createPlaylist controller expectations -->
           <form action="/playlists" method="POST" enctype="multipart/form-data">
+            <!-- Hidden user ID field -->
+            <input type="hidden" name="user" value="<%= user._id %>">
+            
             <!-- Playlist Name -->
-             <input type="hidden" name="user" value="<%= user._id %>">
-            <div class="mb-3">
-              <label for="name" class="form-label">Playlist Name *</label>
+            <div class="mb-4">
+              <label for="name" class="form-label">Playlist Name <span class="text-danger">*</span></label>
               <input 
                 type="text" 
-                class="form-control" 
+                class="form-control bg-dark-secondary border-0 text-light" 
                 id="name" 
                 name="name" 
                 required
@@ -24,11 +26,31 @@
               >
             </div>
 
+            <!-- Cover Image Upload -->
+            <div class="mb-4">
+              <label for="coverImage" class="form-label">Cover Image</label>
+              <div class="cover-upload">
+                <div class="cover-preview mb-2">
+                  <div class="upload-placeholder bg-dark-secondary">
+                    <i class="bi bi-image text-purple"></i>
+                  </div>
+                </div>
+                <input 
+                  type="file" 
+                  class="form-control bg-dark-secondary border-0 text-light" 
+                  id="coverImage" 
+                  name="coverImage"
+                  accept="image/*"
+                >
+                <small class="text-muted">Recommended: Square image, at least 300×300px</small>
+              </div>
+            </div>
+
             <!-- Description -->
-            <div class="mb-3">
+            <div class="mb-4">
               <label for="description" class="form-label">Description</label>
               <textarea 
-                class="form-control" 
+                class="form-control bg-dark-secondary border-0 text-light" 
                 id="description" 
                 name="description" 
                 rows="3"
@@ -37,8 +59,8 @@
             </div>
 
             <!-- Visibility Toggle - matches isPublic in controller -->
-            <div class="mb-3">
-              <div class="form-check">
+            <div class="mb-4">
+              <div class="form-check form-switch">
                 <input 
                   type="checkbox" 
                   class="form-check-input" 
@@ -54,11 +76,11 @@
             </div>
 
             <!-- Submit Button -->
-            <div class="d-flex justify-content-between">
-              <button type="submit" class="btn btn-primary">
-                Create Playlist
+            <div class="d-flex justify-content-between mt-4">
+              <button type="submit" class="btn btn-purple px-4">
+                <i class="bi bi-music-note-list me-2"></i>Create Playlist
               </button>
-              <a href="/playlists" class="btn btn-outline-secondary">
+              <a href="/playlists" class="btn btn-outline-light">
                 Cancel
               </a>
             </div>
@@ -68,3 +90,134 @@
     </div>
   </div>
 </div>
+
+<style>
+  /* WavePlay Theme Styles */
+  body {
+    background-color: #121212;
+    color: #f8f9fa;
+    font-family: 'Inter', 'Segoe UI', Roboto, Arial, sans-serif;
+  }
+  
+  .waveplay-container {
+    padding-top: 5rem !important;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  
+  .text-purple {
+    color: #9b4dff !important;
+  }
+  
+  .bg-purple {
+    background-color: #9b4dff !important;
+  }
+  
+  .bg-dark-secondary {
+    background-color: #1e1e1e !important;
+  }
+  
+  .btn-purple {
+    background-color: #9b4dff;
+    border-color: #9b4dff;
+    color: white;
+    transition: all 0.2s ease;
+  }
+  
+  .btn-purple:hover, .btn-purple:focus {
+    background-color: #8440e3;
+    border-color: #8440e3;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .card {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  }
+  
+  /* Form control styling */
+  .form-control {
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: 6px;
+  }
+  
+  .form-control:focus {
+    border-color: #9b4dff;
+    box-shadow: 0 0 0 0.25rem rgba(155, 77, 255, 0.25);
+  }
+  
+  /* Form switch styling */
+  .form-switch .form-check-input {
+    width: 3em;
+    height: 1.5em;
+    margin-top: 0.25em;
+  }
+  
+  .form-switch .form-check-input:checked {
+    background-color: #9b4dff;
+    border-color: #9b4dff;
+  }
+  
+  .form-check-input:focus {
+    border-color: #9b4dff;
+    box-shadow: 0 0 0 0.25rem rgba(155, 77, 255, 0.25);
+  }
+  
+  /* Cover image upload styling */
+  .cover-upload .upload-placeholder {
+    width: 150px;
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    border: 2px dashed #4d4d4d;
+  }
+  
+  .cover-upload .upload-placeholder i {
+    font-size: 48px;
+  }
+  
+  .cover-upload .cover-preview img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 8px;
+    display: none;
+  }
+</style>
+
+<script>
+  // Preview uploaded image
+  document.addEventListener('DOMContentLoaded', function() {
+    const coverImageInput = document.getElementById('coverImage');
+    const placeholder = document.querySelector('.upload-placeholder');
+    
+    coverImageInput.addEventListener('change', function() {
+      if (this.files && this.files[0]) {
+        const reader = new FileReader();
+        
+        reader.onload = function(e) {
+          // Create image element if it doesn't exist
+          let previewImg = document.querySelector('.cover-preview img');
+          if (!previewImg) {
+            previewImg = document.createElement('img');
+            document.querySelector('.cover-preview').appendChild(previewImg);
+          }
+          
+          // Update image and show it
+          previewImg.src = e.target.result;
+          previewImg.style.display = 'block';
+          placeholder.style.display = 'none';
+        }
+        
+        reader.readAsDataURL(this.files[0]);
+      }
+    });
+  });
+</script>

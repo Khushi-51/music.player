@@ -1,79 +1,84 @@
-
-    <div class="row mb-4">
-    <div class="col-md-8">
-      <h1><i class="fas fa-music me-2"></i>All Songs</h1>
+<div class="songs-container">
+  <!-- Page Title and Upload Button Row -->
+  <div class="page-header">
+    <div class="page-title">
+      <i class="fas fa-music title-icon"></i>All Songs
     </div>
-    <div class="col-md-4 text-md-end">
+    <div class="upload-btn-container">
       <% if (locals.user) { %>
-        <a href="/songs/upload/new" class="btn btn-primary"><i class="fas fa-upload me-2"></i>Upload Song</a>
+        <a href="/songs/upload/new" class="upload-btn">
+          <i class="fas fa-upload"></i>Upload Song
+        </a>
       <% } %>
     </div>
   </div>
   
   <!-- Search and Filter Form -->
-  <div class="card mb-4">
-    <div class="card-body">
-      <form action="/songs" method="GET">
-        <div class="row g-3">
-          <div class="col-md-6">
-            <div class="input-group">
-              <span class="input-group-text"><i class="fas fa-search"></i></span>
-              <input type="text" class="form-control" name="search" placeholder="Search songs, artists, albums...">
-            </div>
-          </div>
-          <div class="col-md-3">
-            <select name="genre" class="form-select">
-              <option value="">All Genres</option>
-              <option value="Pop">Pop</option>
-              <option value="Rock">Rock</option>
-              <option value="Hip Hop">Hip Hop</option>
-              <option value="Electronic">Electronic</option>
-              <option value="Jazz">Jazz</option>
-              <option value="Classical">Classical</option>
-              <option value="Country">Country</option>
-              <option value="R&B">R&B</option>
-              <option value="Other">Other</option>
-            </select>
-          </div>
-          <div class="col-md-3">
-            <button type="submit" class="btn btn-primary w-100">Apply Filters</button>
+  <div class="search-card">
+    <form action="/songs" method="GET">
+      <div class="search-form">
+        <div class="search-input-container">
+          <div class="search-input-wrapper">
+            <i class="fas fa-search search-icon"></i>
+            <input type="text" class="search-input" name="search" placeholder="Search songs, artists, albums...">
           </div>
         </div>
-      </form>
-    </div>
+        <div class="genre-select-container">
+          <select name="genre" class="genre-select">
+            <option value="">All Genres</option>
+            <option value="Pop">Pop</option>
+            <option value="Rock">Rock</option>
+            <option value="Hip Hop">Hip Hop</option>
+            <option value="Electronic">Electronic</option>
+            <option value="Jazz">Jazz</option>
+            <option value="Classical">Classical</option>
+            <option value="Country">Country</option>
+            <option value="R&B">R&B</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <div class="filter-btn-container">
+          <button type="submit" class="filter-btn">Apply Filters</button>
+        </div>
+      </div>
+    </form>
   </div>
   
-  <!-- Song List -->
-  <div class="row">
+  <!-- Song Grid -->
+  <div class="song-grid">
     <% if (songs && songs.length > 0) { %>
       <% songs.forEach(song => { %>
-        <div class="col-md-6 col-lg-4 mb-4">
-          <div class="card h-100 shadow-sm">
-            <img src="<%= song.coverImage %>" class="card-img-top" alt="<%= song.title %>" style="height: 200px; object-fit: cover;">
-            <div class="card-body">
-              <h5 class="card-title text-truncate"><%= song.title %></h5>
-              <p class="card-text">
-                <small class="text-muted"><i class="fas fa-user me-1"></i><%= song.artist %></small><br>
-                <small class="text-muted"><i class="fas fa-compact-disc me-1"></i><%= song.album || 'Single' %></small>
-              </p>
-              <div class="d-flex justify-content-between align-items-center">
-                <a href="/songs/<%= song._id %>" class="btn btn-outline-primary">
-                  <i class="fas fa-play me-1"></i>Play
-                </a>
-                <small class="text-muted"><i class="fas fa-headphones me-1"></i><%= song.playCount %> plays</small>
-              </div>
+        <div class="song-card">
+          <div class="song-cover-container">
+            <img src="<%= song.coverImage %>" class="song-cover" alt="<%= song.title %>">
+            <div class="play-overlay">
+              <a href="/songs/<%= song._id %>" class="play-btn">
+                <i class="fas fa-play"></i>
+              </a>
+            </div>
+          </div>
+          <div class="song-info">
+            <h3 class="song-title"><%= song.title %></h3>
+            <p class="song-artist">
+              <i class="fas fa-user"></i><%= song.artist %>
+            </p>
+            <p class="song-album">
+              <i class="fas fa-compact-disc"></i><%= song.album || 'Single' %>
+            </p>
+            <div class="song-stats">
+              <span class="play-count"><i class="fas fa-headphones"></i><%= song.playCount %></span>
             </div>
           </div>
         </div>
       <% }) %>
     <% } else { %>
-      <div class="col-12 text-center py-5">
-        <div class="py-5">
-          <i class="fas fa-music fa-4x text-muted mb-3"></i>
+      <div class="no-songs">
+        <div class="no-songs-content">
+          <i class="fas fa-music no-songs-icon"></i>
           <h3>No songs found</h3>
-          <p class="text-muted">Try adjusting your search or filters, or upload a new song.</p>
+          <p>Try adjusting your search or filters, or upload a new song.</p>
           <% if (locals.user) { %>
-            <a href="/songs/upload/new" class="btn btn-primary mt-3"><i class="fas fa-upload me-2"></i>Upload New Song</a>
+            <a href="/songs/upload/new" class="upload-btn-large"><i class="fas fa-upload"></i>Upload New Song</a>
           <% } %>
         </div>
       </div>
@@ -82,27 +87,440 @@
   
   <!-- Pagination -->
   <% if (songs && songs.length > 0) { %>
-    <nav aria-label="Page navigation" class="my-4">
-      <ul class="pagination justify-content-center">
-        <li class="page-item <%= !locals.pagination || !locals.pagination.hasPrevPage ? 'disabled' : '' %>">
-          <a class="page-link" href="/songs?page=<%= (locals.pagination && locals.pagination.page > 1) ? locals.pagination.page - 1 : 1 %>" aria-label="Previous">
-            <span aria-hidden="true">&laquo;</span>
-          </a>
-        </li>
+    <div class="pagination-container">
+      <div class="pagination">
+        <a class="page-arrow <%= !locals.pagination || !locals.pagination.hasPrevPage ? 'disabled' : '' %>" 
+           href="/songs?page=<%= (locals.pagination && locals.pagination.page > 1) ? locals.pagination.page - 1 : 1 %>">
+          <i class="fas fa-chevron-left"></i>
+        </a>
         
         <% if (locals.pagination) { %>
           <% for (let i = 1; i <= locals.pagination.totalPages; i++) { %>
-            <li class="page-item <%= locals.pagination.page === i ? 'active' : '' %>">
-              <a class="page-link" href="/songs?page=<%= i %>"><%= i %></a>
-            </li>
+            <a class="page-number <%= locals.pagination.page === i ? 'active' : '' %>" 
+               href="/songs?page=<%= i %>"><%= i %></a>
           <% } %>
         <% } %>
         
-        <li class="page-item <%= !locals.pagination || !locals.pagination.hasNextPage ? 'disabled' : '' %>">
-          <a class="page-link" href="/songs?page=<%= (locals.pagination && locals.pagination.hasNextPage) ? locals.pagination.page + 1 : (locals.pagination ? locals.pagination.totalPages : 1) %>" aria-label="Next">
-            <span aria-hidden="true">&raquo;</span>
-          </a>
-        </li>
-      </ul>
-    </nav>
+        <a class="page-arrow <%= !locals.pagination || !locals.pagination.hasNextPage ? 'disabled' : '' %>" 
+           href="/songs?page=<%= (locals.pagination && locals.pagination.hasNextPage) ? locals.pagination.page + 1 : (locals.pagination ? locals.pagination.totalPages : 1) %>">
+          <i class="fas fa-chevron-right"></i>
+        </a>
+      </div>
+    </div>
   <% } %>
+</div>
+
+<style>
+/* WavePlay Theme Styling */
+:root {
+  --waveplay-primary: #8c52ff;
+  --waveplay-primary-light: #9d6aff; 
+  --waveplay-dark: #121212;
+  --waveplay-dark-lighter: #1e1e1e;
+  --waveplay-dark-card: #242424;
+  --waveplay-text: #ffffff;
+  --waveplay-text-secondary: #b3b3b3;
+}
+
+body {
+  background-color: var(--waveplay-dark);
+  color: var(--waveplay-text);
+  font-family: 'Inter', 'Segoe UI', Roboto, sans-serif;
+}
+
+.songs-container {
+  padding: 30px 40px;
+  max-width: 1300px;
+  margin: 0 auto;
+  margin-top: 70px; /* Space for fixed header */
+}
+
+/* Page Title and Upload Button */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.page-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  background: linear-gradient(90deg, var(--waveplay-primary), #b385ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.title-icon {
+  margin-right: 15px;
+  color: var(--waveplay-primary);
+}
+
+.upload-btn-container {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.upload-btn {
+  background-color: var(--waveplay-primary);
+  color: white;
+  border: none;
+  border-radius: 30px;
+  padding: 12px 24px;
+  font-weight: 600;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  transition: all 0.2s ease;
+}
+
+.upload-btn:hover {
+  background-color: var(--waveplay-primary-light);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(140, 82, 255, 0.3);
+}
+
+.upload-btn i {
+  margin-right: 8px;
+}
+
+/* Search and Filter */
+.search-card {
+  background-color: var(--waveplay-dark-lighter);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 40px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.search-form {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 15px;
+}
+
+.search-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-icon {
+  position: absolute;
+  left: 15px;
+  color: var(--waveplay-text-secondary);
+}
+
+.search-input {
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.1);
+  border: none;
+  border-radius: 30px;
+  padding: 12px 20px 12px 45px;
+  color: white;
+  font-size: 1rem;
+}
+
+.search-input::placeholder {
+  color: var(--waveplay-text-secondary);
+}
+
+.search-input:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--waveplay-primary);
+}
+
+.genre-select {
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.1);
+  border: none;
+  border-radius: 30px;
+  padding: 12px 20px;
+  color: white;
+  font-size: 1rem;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23b3b3b3' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 15px center;
+  background-size: 16px;
+}
+
+.genre-select:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--waveplay-primary);
+}
+
+.filter-btn {
+  width: 100%;
+  background-color: var(--waveplay-primary);
+  color: white;
+  border: none;
+  border-radius: 30px;
+  padding: 12px 20px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.filter-btn:hover {
+  background-color: var(--waveplay-primary-light);
+}
+
+/* Song Grid */
+.song-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 25px;
+  margin-bottom: 40px;
+}
+
+.song-card {
+  background-color: var(--waveplay-dark-card);
+  border-radius: 10px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.song-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+.song-cover-container {
+  position: relative;
+  padding-bottom: 100%; /* 1:1 Aspect Ratio */
+  overflow: hidden;
+}
+
+.song-cover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.play-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.song-card:hover .play-overlay {
+  opacity: 1;
+}
+
+.song-card:hover .song-cover {
+  transform: scale(1.05);
+}
+
+.play-btn {
+  background-color: var(--waveplay-primary);
+  color: white;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.play-btn i {
+  font-size: 1.2rem;
+}
+
+.play-btn:hover {
+  transform: scale(1.1);
+  background-color: var(--waveplay-primary-light);
+}
+
+.song-info {
+  padding: 15px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.song-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0 0 10px 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.song-artist, .song-album {
+  font-size: 0.9rem;
+  color: var(--waveplay-text-secondary);
+  margin: 5px 0;
+  display: flex;
+  align-items: center;
+}
+
+.song-artist i, .song-album i {
+  margin-right: 8px;
+  font-size: 0.8rem;
+}
+
+.song-stats {
+  margin-top: auto;
+  padding-top: 10px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.play-count {
+  font-size: 0.85rem;
+  color: var(--waveplay-text-secondary);
+  display: flex;
+  align-items: center;
+}
+
+.play-count i {
+  margin-right: 5px;
+}
+
+/* No Songs Found */
+.no-songs {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 300px;
+}
+
+.no-songs-content {
+  text-align: center;
+  padding: 50px;
+}
+
+.no-songs-icon {
+  font-size: 4rem;
+  color: var(--waveplay-primary);
+  opacity: 0.7;
+  margin-bottom: 20px;
+}
+
+.no-songs h3 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+.no-songs p {
+  color: var(--waveplay-text-secondary);
+  margin-bottom: 25px;
+}
+
+.upload-btn-large {
+  background-color: var(--waveplay-primary);
+  color: white;
+  border: none;
+  border-radius: 30px;
+  padding: 12px 30px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.upload-btn-large:hover {
+  background-color: var(--waveplay-primary-light);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(140, 82, 255, 0.3);
+}
+
+.upload-btn-large i {
+  margin-right: 10px;
+}
+
+/* Pagination */
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  margin: 40px 0 20px 0;
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.page-number, .page-arrow {
+  min-width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: var(--waveplay-text);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.page-number:hover, .page-arrow:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.page-number.active {
+  background-color: var(--waveplay-primary);
+  font-weight: 600;
+}
+
+.page-arrow.disabled {
+  color: var(--waveplay-text-secondary);
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* Responsive Styles */
+@media (max-width: 992px) {
+  .songs-container {
+    padding: 20px;
+  }
+  
+  .search-form {
+    grid-template-columns: 1fr;
+  }
+  
+  .song-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+}
+
+@media (max-width: 576px) {
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+  
+  .upload-btn-container {
+    width: 100%;
+  }
+  
+  .upload-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+</style>

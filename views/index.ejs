@@ -1,91 +1,523 @@
-<div class="container-fluid py-5" style="background: #e6ecef; min-height: 100vh; font-family: 'Courier New', monospace;">
-  <div class="row">
-    <div class="col-lg-8 col-md-10 mx-auto text-center">
-      <div class="py-4">
-        <h1 class="display-4 fw-bold text-dark mb-4" style="letter-spacing: 2px;">
-          <i class="fas fa-music me-2"></i>Music Player
-        </h1>
-        <p class="lead text-secondary mb-5 mx-auto" style="max-width: 500px;">Stream tunes, build playlists, and find new artists.</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WavePlay - Your Music Universe</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #8E2DE2;
+      --primary-gradient: linear-gradient(45deg, #8E2DE2 0%, #4A00E0 100%);
+      --secondary: #121212;
+      --light: #f0f0f0;
+      --accent: #00c6ff;
+      --card-bg: rgba(255, 255, 255, 0.05);
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    body {
+      background-color: var(--secondary);
+      color: white;
+      overflow-x: hidden;
+    }
+    
+    .waveform {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      z-index: 0;
+      opacity: 0.07;
+      pointer-events: none;
+      background: repeating-linear-gradient(
+        90deg,
+        var(--primary),
+        var(--primary) 2px,
+        transparent 2px,
+        transparent 20px
+      );
+    }
+    
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    
+    .hero-circle {
+      position: absolute;
+      border-radius: 50%;
+      background: var(--primary-gradient);
+      opacity: 0.5;
+      filter: blur(60px);
+    }
+    
+    .hero-circle:nth-child(1) {
+      width: 500px;
+      height: 500px;
+      top: -100px;
+      left: -200px;
+    }
+    
+    .hero-circle:nth-child(2) {
+      width: 300px;
+      height: 300px;
+      bottom: -50px;
+      right: -100px;
+      background: linear-gradient(45deg, var(--accent), #4A00E0);
+    }
+    
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 30px 0;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 10;
+    }
+    
+    .logo {
+      font-size: 2rem;
+      font-weight: 800;
+      background: var(--primary-gradient);
+      -webkit-background-clip: text;
+      background-clip: text;
+      background-clip: text;
+      background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .logo i {
+      background: var(--primary-gradient);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .hero-content {
+      text-align: center;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    .hero-title {
+      font-size: 4.5rem;
+      font-weight: 800;
+      margin-bottom: 20px;
+      letter-spacing: -2px;
+      line-height: 1.1;
+    }
+    
+    .hero-title span {
+      display: block;
+      background: var(--primary-gradient);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .hero-subtitle {
+      font-size: 1.2rem;
+      color: rgba(255, 255, 255, 0.7);
+      margin-bottom: 40px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    .btn-group {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      margin-top: 30px;
+    }
+    
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 15px 30px;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 1rem;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-primary {
+      background: var(--primary-gradient);
+      color: white;
+      border: none;
+      box-shadow: 0 10px 20px rgba(142, 45, 226, 0.3);
+    }
+    
+    .btn-primary:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 25px rgba(142, 45, 226, 0.4);
+    }
+    
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.15);
+      transform: translateY(-5px);
+    }
+    
+    .features {
+      padding: 100px 0;
+      position: relative;
+    }
+    
+    .section-title {
+      text-align: center;
+      font-size: 2.5rem;
+      font-weight: 800;
+      margin-bottom: 20px;
+    }
+    
+    .section-title span {
+      background: var(--primary-gradient);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .section-subtitle {
+      text-align: center;
+      color: rgba(255, 255, 255, 0.7);
+      margin-bottom: 60px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+    }
+    
+    .feature-card {
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 40px 30px;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      transition: all 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    
+    .feature-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+    
+    .feature-icon {
+      width: 80px;
+      height: 80px;
+      background: var(--primary-gradient);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      margin-bottom: 25px;
+    }
+    
+    .feature-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 15px;
+    }
+    
+    .feature-desc {
+      color: rgba(255, 255, 255, 0.7);
+      line-height: 1.6;
+    }
+    
+    .cta {
+      padding: 100px 0;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .cta-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(142, 45, 226, 0.1) 0%, rgba(74, 0, 224, 0.1) 100%);
+      z-index: 0;
+    }
+    
+    .floating-notes {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      overflow: hidden;
+      z-index: -1;
+    }
+    
+    .note {
+      position: absolute;
+      font-size: 1.5rem;
+      opacity: 0.1;
+      animation: float 15s linear infinite;
+    }
+    
+    @keyframes float {
+      0% {
+        transform: translateY(100vh) rotate(0deg);
+        opacity: 0;
+      }
+      10% {
+        opacity: 0.1;
+      }
+      90% {
+        opacity: 0.1;
+      }
+      100% {
+        transform: translateY(-100px) rotate(360deg);
+        opacity: 0;
+      }
+    }
+    
+    .album-display {
+      position: relative;
+      height: 200px;
+      margin: 50px auto;
+      max-width: 800px;
+    }
+    
+    .album {
+      position: absolute;
+      width: 150px;
+      height: 150px;
+      border-radius: 10px;
+      background-size: cover;
+      background-position: center;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+    }
+    
+    .album:nth-child(1) {
+      background-image: url("/api/placeholder/150/150");
+      transform: translateX(-125%) rotate(-15deg);
+      z-index: 1;
+    }
+    
+    .album:nth-child(2) {
+      background-image: url("/api/placeholder/150/150");
+      transform: translateX(-60%) rotate(-5deg);
+      z-index: 2;
+    }
+    
+    .album:nth-child(3) {
+      background-image: url("/api/placeholder/150/150");
+      transform: translateX(0) rotate(0deg);
+      z-index: 3;
+      width: 180px;
+      height: 180px;
+    }
+    
+    .album:nth-child(4) {
+      background-image: url("/api/placeholder/150/150");
+      transform: translateX(60%) rotate(5deg);
+      z-index: 2;
+    }
+    
+    .album:nth-child(5) {
+      background-image: url("/api/placeholder/150/150");
+      transform: translateX(125%) rotate(15deg);
+      z-index: 1;
+    }
+    
+    @media (max-width: 768px) {
+      .hero-title {
+        font-size: 3rem;
+      }
+      
+      .btn-group {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .btn {
+        width: 100%;
+        max-width: 300px;
+      }
+      
+      .album {
+        width: 100px;
+        height: 100px;
+      }
+      
+      .album:nth-child(3) {
+        width: 120px;
+        height: 120px;
+      }
+      
+      .album:nth-child(1), .album:nth-child(5) {
+        display: none;
+      }
+      
+      .album:nth-child(2) {
+        transform: translateX(-70%) rotate(-5deg);
+      }
+      
+      .album:nth-child(4) {
+        transform: translateX(70%) rotate(5deg);
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Animated background -->
+  <div class="waveform"></div>
+  
+  <!-- Hero section -->
+  <section class="hero">
+    <div class="hero-circle"></div>
+    <div class="hero-circle"></div>
+    
+    <div class="container">
+      <header class="header">
+        <div class="logo">
+          <i class="fas fa-waveform-path"></i>WavePlay
+        </div>
+      </header>
+      
+      <div class="hero-content">
+        <h1 class="hero-title">Your Music, <span>Amplified</span></h1>
+        <p class="hero-subtitle">Stream your favorite tracks, create personalized playlists, and discover new artists in a seamless audio experience.</p>
         
-        <% if (!locals.user) { %>
-          <div class="d-flex justify-content-center gap-3">
-            <a href="/auth/login" class="btn btn-dark btn-lg px-4 py-2" style="border-radius: 5px; transition: background 0.3s ease;">Login</a>
-            <a href="/auth/register" class="btn btn-outline-dark btn-lg px-4 py-2" style="border-radius: 5px; transition: background 0.3s ease;">Register</a>
-          </div>
-        <% } else { %>
-          <div class="d-flex justify-content-center gap-3">
-            <a href="/songs" class="btn btn-dark btn-lg px-4 py-2" style="border-radius: 5px; transition: background 0.3s ease;">Browse Songs</a>
-            <a href="/songs/upload/new" class="btn btn-outline-dark btn-lg px-4 py-2" style="border-radius: 5px; transition: background 0.3s ease;">Upload Music</a>
-          </div>
-        <% } %>
-      </div>
-    </div>
-  </div>
-
-  <div class="row mt-4">
-    <div class="col-12">
-      <h2 class="text-center text-dark fw-bold mb-4">Features</h2>
-      <div class="row justify-content-center">
-        <div class="col-md-4 col-sm-6 mb-4">
-          <div class="card h-100 border-0" style="background: #f8f9fa; transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
-            <div class="card-body text-center p-4">
-              <i class="fas fa-headphones-alt text-dark fa-3x mb-3"></i>
-              <h5 class="card-title fw-bold">Stream Music</h5>
-              <p class="card-text text-secondary">Play your favorite tracks anytime, anywhere.</p>
-            </div>
-          </div>
+        <div class="album-display">
+          <div class="album" style="background-image: url('https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=400&q=80');"></div>
+          <div class="album" style="background-image: url('https://images.unsplash.com/photo-1497032628192-86f99bcd76bc?auto=format&fit=crop&w=400&q=80');"></div>
+          <div class="album" style="background-image: url('https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=400&q=80');"></div>
+          <div class="album" style="background-image: url('https://images.unsplash.com/photo-1507874457470-272b3c8d8ee2?auto=format&fit=crop&w=400&q=80');"></div>
+          <div class="album" style="background-image: url('https://images.unsplash.com/photo-1544785349-c4a5301826fd?auto=format&fit=crop&w=400&q=80');"></div>
         </div>
-        <div class="col-md-4 col-sm-6 mb-4">
-          <div class="card h-100 border-0" style="background: #f8f9fa; transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
-            <div class="card-body text-center p-4">
-              <i class="fas fa-list text-dark fa-3x mb-3"></i>
-              <h5 class="card-title fw-bold">Create Playlists</h5>
-              <p class="card-text text-secondary">Organize and share your music collections.</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4 col-sm-6 mb-4">
-          <div class="card h-100 border-0" style="background: #f8f9fa; transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
-            <div class="card-body text-center p-4">
-              <i class="fas fa-upload text-dark fa-3x mb-3"></i>
-              <h5 class="card-title fw-bold">Upload Songs</h5>
-              <p class="card-text text-secondary">Add your tracks and access them anywhere.</p>
-            </div>
-          </div>
+        
+        <div class="btn-group">
+          <% if (!locals.user) { %>
+            <a href="/auth/login" class="btn btn-primary"><i class="fas fa-headphones"></i> Login</a>
+            <a href="/auth/register" class="btn btn-secondary"><i class="fas fa-user-plus"></i> Register</a>
+          <% } else { %>
+            <a href="/songs" class="btn btn-primary"><i class="fas fa-play"></i> Browse Songs</a>
+            <a href="/songs/upload/new" class="btn btn-secondary"><i class="fas fa-cloud-upload-alt"></i> Upload Music</a>
+          <% } %>
         </div>
       </div>
     </div>
-  </div>
-
-  <div class="row mt-4">
-    <div class="col-12 text-center">
-      <h2 class="text-dark fw-bold mb-4">Start Now</h2>
-      <p class="lead text-secondary mx-auto" style="max-width: 500px;">Join music fans enjoying our platform.</p>
+  </section>
+  
+  <!-- Features section -->
+  <section class="features">
+    <div class="container">
+      <h2 class="section-title">Amazing <span>Features</span></h2>
+      <p class="section-subtitle">Experience music like never before with our powerful set of features designed for true music lovers</p>
+      
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-headphones-alt"></i>
+          </div>
+          <h3 class="feature-title">High Quality Audio</h3>
+          <p class="feature-desc">Stream crystal-clear sound with our advanced audio processing technology. Hear every detail as the artist intended.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-list"></i>
+          </div>
+          <h3 class="feature-title">Custom Playlists</h3>
+          <p class="feature-desc">Create, organize and share your perfect music collections for any mood, occasion or activity.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-upload"></i>
+          </div>
+          <h3 class="feature-title">Unlimited Uploads</h3>
+          <p class="feature-desc">Upload your personal music library and access it from anywhere, anytime, on any device.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- CTA section -->
+  <section class="cta">
+    <div class="cta-bg"></div>
+    <div class="floating-notes">
+      <i class="fas fa-music note" style="top: 10%; left: 15%; animation-duration: 20s;"></i>
+      <i class="fas fa-music note" style="top: 30%; left: 85%; animation-duration: 15s;"></i>
+      <i class="fas fa-music note" style="top: 50%; left: 25%; animation-duration: 18s;"></i>
+      <i class="fas fa-music note" style="top: 70%; left: 70%; animation-duration: 22s;"></i>
+      <i class="fas fa-note note" style="top: 20%; left: 40%; animation-duration: 19s;"></i>
+      <i class="fas fa-note note" style="top: 60%; left: 55%; animation-duration: 21s;"></i>
+    </div>
+    
+    <div class="container">
+      <h2 class="section-title">Start Your <span>Musical Journey</span></h2>
+      <p class="section-subtitle">Join thousands of music fans already enjoying our platform. It only takes a minute to get started.</p>
+      
       <% if (!locals.user) { %>
-        <a href="/auth/register" class="btn btn-dark btn-lg mt-3 px-4 py-2" style="border-radius: 5px; transition: background 0.3s ease;">Sign Up</a>
+        <a href="/auth/register" class="btn btn-primary"><i class="fas fa-rocket"></i> Get Started Now</a>
       <% } else { %>
-        <a href="/songs" class="btn btn-dark btn-lg mt-3 px-4 py-2" style="border-radius: 5px; transition: background 0.3s ease;">Listen Now</a>
+        <a href="/songs" class="btn btn-primary"><i class="fas fa-play"></i> Listen Now</a>
       <% } %>
     </div>
-  </div>
-</div>
-
-<style>
-  body {
-    background: #e6ecef;
-  }
-  .btn-dark {
-    background: #2c3e50;
-    border: none;
-  }
-  .btn-dark:hover {
-    background: #34495e;
-  }
-  .btn-outline-dark:hover {
-    background: #ecf0f1;
-    color: #2c3e50;
-  }
-  .card {
-    border-radius: 10px;
-  }
-</style>
+  </section>
+  
+  <script>
+    // Randomly position and animate musical notes
+    const notes = document.querySelectorAll('.note');
+    notes.forEach(note => {
+      note.style.left = `${Math.random() * 100}%`;
+      note.style.animationDelay = `${Math.random() * 10}s`;
+    });
+  </script>
+</body>
+</html>

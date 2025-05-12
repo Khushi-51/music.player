@@ -1,48 +1,333 @@
+<!-- Register Form Component -->
+<style>
+  body {
+  background-color: var(--background-color);
+  color: var(--text-primary);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-image: linear-gradient(to bottom right, #121212, #2A1A5E);
+}
+  :root {
+    --primary-color: #8B5CF6;
+    --secondary-color: #4F46E5;
+    --accent-color: #C2B4FF;
+    --background-color: #121212;
+    --card-bg: #1E1E1E;
+    --text-primary: #FFFFFF;
+    --text-secondary: #AAAAAA;
+  }
+  
+  .card {
+    background-color: var(--card-bg);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+  }
+  
+  .card-body {
+    padding: 2.5rem !important;
+  }
+  
+  .card-title {
+    color: var(--primary-color);
+    font-weight: 700;
+    font-size: 1.8rem;
+  }
+  
+  .form-control {
+    background-color: #2C2C2C;
+    border: 1px solid #333333;
+    color: var(--text-primary);
+    padding: 12px 15px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+  }
+  
+  .form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.25);
+    background-color: #2C2C2C;
+  }
+  
+  .form-label {
+    color: var(--text-secondary);
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+  
+  .input-group-text {
+    background-color: #333333;
+    border: 1px solid #444444;
+    color: var(--primary-color);
+  }
+  
+  .form-text {
+    color: #888888;
+    font-size: 0.85rem;
+    margin-top: 5px;
+  }
+  
+  .text-muted {
+    color: var(--text-secondary) !important;
+  }
+  
+  .btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    transition: all 0.3s ease;
+    padding: 12px 20px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+  
+  .btn-primary:hover, .btn-primary:focus {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(139, 92, 246, 0.4);
+  }
+  
+  a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+  
+  a:hover {
+    color: var(--secondary-color);
+    text-decoration: underline;
+  }
+</style>
+<div class="music-illustration music-note-1">
+   <i class="fas fa-music"></i>
+ </div>
+ <div class="music-illustration music-note-2">
+   <i class="fas fa-music"></i>
+ </div>
+ <div class="music-illustration music-note-3">
+   <i class="fas fa-music"></i>
+ </div>
+ 
+<div class="container my-5 py-5">
+<div class="text-center login-brand mb-4">
+  <h1><i class="fas fa-wave-square me-2"></i>Wave<span class="brand-highlight">Play</span></h1>
+  <p>Your Music, Amplified</p>
+</div>
 <div class="row justify-content-center">
-    <div class="col-md-6">
-      <div class="card shadow">
-        <div class="card-body p-5">
-          <div class="text-center mb-4">
-            <h2 class="card-title"><i class="fas fa-user-plus me-2"></i>Register</h2>
-            <p class="text-muted">Create a new account to access all features</p>
+  <div class="col-md-6">
+    <div class="card shadow">
+      <div class="card-body p-5">
+        <div class="text-center mb-4">
+          <h2 class="card-title"><i class="fas fa-user-plus me-2"></i>Register</h2>
+          <p class="text-muted">Create a new account to access all features</p>
+        </div>
+        
+        <form action="/auth/register" method="POST">
+          <div class="mb-3">
+            <label for="username" class="form-label">Username</label>
+            <div class="input-group">
+              <span class="input-group-text"><i class="fas fa-user"></i></span>
+              <input type="text" class="form-control" id="username" name="username" placeholder="Choose a username" minlength="3" maxlength="30" required>
+            </div>
+            <div class="form-text">Username must be 3-30 characters long</div>
           </div>
           
-          <form action="/auth/register" method="POST">
-            <div class="mb-3">
-              <label for="username" class="form-label">Username</label>
-              <div class="input-group">
-                <span class="input-group-text"><i class="fas fa-user"></i></span>
-                <input type="text" class="form-control" id="username" name="username" placeholder="Choose a username" minlength="3" maxlength="30" required>
-              </div>
-              <div class="form-text">Username must be 3-30 characters long</div>
+          <div class="mb-3">
+            <label for="email" class="form-label">Email address</label>
+            <div class="input-group">
+              <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+              <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>
             </div>
-            
-            <div class="mb-3">
-              <label for="email" class="form-label">Email address</label>
-              <div class="input-group">
-                <span class="input-group-text"><i class="fas fa-envelope"></i></span>
-                <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>
-              </div>
+          </div>
+          
+          <div class="mb-4">
+            <label for="password" class="form-label">Password</label>
+            <div class="input-group">
+              <span class="input-group-text"><i class="fas fa-lock"></i></span>
+              <input type="password" class="form-control" id="password" name="password" placeholder="Create a password" minlength="6" required>
             </div>
-            
-            <div class="mb-4">
-              <label for="password" class="form-label">Password</label>
-              <div class="input-group">
-                <span class="input-group-text"><i class="fas fa-lock"></i></span>
-                <input type="password" class="form-control" id="password" name="password" placeholder="Create a password" minlength="6" required>
-              </div>
-              <div class="form-text">Password must be at least 6 characters long</div>
-            </div>
-            
-            <div class="d-grid">
-              <button type="submit" class="btn btn-primary btn-lg">Register</button>
-            </div>
-            
-            <div class="mt-4 text-center">
-              <p>Already have an account? <a href="/auth/login">Login</a></p>
-            </div>
-          </form>
-        </div>
+            <div class="form-text">Password must be at least 6 characters long</div>
+          </div>
+          
+          <div class="d-grid">
+            <button type="submit" class="btn btn-primary btn-lg">
+              <i class="fas fa-user-plus me-2"></i>Register
+            </button>
+          </div>
+          
+          <div class="mt-4 text-center">
+            <p>Already have an account? <a href="/auth/login">Login</a></p>
+          </div>
+        </form>
       </div>
     </div>
   </div>
+</div>
+</div>
+<style>
+  :root {
+    --primary-color: #8B5CF6;
+    --secondary-color: #4F46E5;
+    --accent-color: #C2B4FF;
+    --background-color: #121212;
+    --card-bg: #1E1E1E;
+    --text-primary: #FFFFFF;
+    --text-secondary: #AAAAAA;
+  }
+  
+  body {
+    background-color: var(--background-color);
+    color: var(--text-primary);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-image: linear-gradient(to bottom right, #121212, #2A1A5E);
+  }
+  
+  .btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    transition: all 0.3s ease;
+  }
+  
+  .btn-primary:hover, .btn-primary:focus {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(139, 92, 246, 0.4);
+  }
+  
+  .card {
+    background-color: var(--card-bg);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+  }
+  
+  .card-body {
+    padding: 3rem !important;
+  }
+  
+  .form-control {
+    background-color: #2C2C2C;
+    border: 1px solid #333333;
+    color: var(--text-primary);
+    padding: 12px 15px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+  }
+  
+  .form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.25);
+    background-color: #2C2C2C;
+  }
+  
+  .form-label {
+    color: var(--text-secondary);
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+  
+  .input-group-text {
+    background-color: #333333;
+    border: 1px solid #444444;
+    color: var(--primary-color);
+  }
+  
+  .text-muted {
+    color: var(--text-secondary) !important;
+  }
+  
+  .card-title {
+    color: var(--primary-color);
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+  
+  .login-brand {
+    margin-bottom: 2rem;
+  }
+  
+  .login-brand h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--primary-color);
+    margin-bottom: 0;
+  }
+  
+  .login-brand p {
+    color: var(--text-secondary);
+  }
+  
+  a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+  
+  a:hover {
+    color: var(--secondary-color);
+    text-decoration: underline;
+  }
+  
+  .brand-highlight {
+    color: var(--primary-color);
+  }
+  
+  .welcome-text {
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+  
+  .btn-lg {
+    padding: 12px 20px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+      
+  .music-illustration {
+    position: absolute;
+    opacity: 0.1;
+    z-index: -1;
+  }
+  
+  .music-note-1 {
+    top: 50px;
+    left: 10%;
+    font-size: 4rem;
+    animation: float 8s ease-in-out infinite;
+  }
+  
+  .music-note-2 {
+    bottom: 80px;
+    right: 15%;
+    font-size: 5rem;
+    animation: float 6s ease-in-out infinite 1s;
+  }
+  
+  .music-note-3 {
+    top: 30%;
+    right: 10%;
+    font-size: 3rem;
+    animation: float 7s ease-in-out infinite 0.5s;
+  }
+  
+  @keyframes float {
+    0% {
+      transform: translateY(0) rotate(0deg);
+    }
+    50% {
+      transform: translateY(-20px) rotate(5deg);
+    }
+    100% {
+      transform: translateY(0) rotate(0deg);
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .card-body {
+      padding: 2rem !important;
+    }
+  }
+</style>

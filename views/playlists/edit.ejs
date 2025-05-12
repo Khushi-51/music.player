@@ -1,48 +1,88 @@
-<div class="container mt-4">
+<div class="container-fluid waveplay-container py-4">
   <div class="row justify-content-center">
-    <div class="col-md-8">
-      <div class="card">
-        <div class="card-header">
-          <h2>Edit Playlist</h2>
+    <div class="col-md-8 col-lg-6">
+      <div class="card bg-dark text-light border-0 shadow">
+        <div class="card-header bg-dark-secondary border-0 py-3">
+          <h2 class="mb-0 text-purple">Edit Playlist</h2>
         </div>
         <div class="card-body">
           <form action="/playlists/<%= playlist._id %>?_method=PUT" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
-            <div class="mb-3">
-              <label for="name" class="form-label">Playlist Name</label>
-              <input type="text" class="form-control" id="name" name="name" value="<%= playlist.name %>" required>
+            <div class="mb-4">
+              <label for="name" class="form-label">Playlist Name <span class="text-danger">*</span></label>
+              <input 
+                type="text" 
+                class="form-control bg-dark-secondary border-0 text-light" 
+                id="name" 
+                name="name" 
+                value="<%= playlist.name %>" 
+                required
+              >
               <div class="invalid-feedback">
                 Please provide a playlist name.
               </div>
             </div>
             
-            <div class="mb-3">
+            <div class="mb-4">
               <label for="description" class="form-label">Description</label>
-              <textarea class="form-control" id="description" name="description" rows="3"><%= playlist.description %></textarea>
+              <textarea 
+                class="form-control bg-dark-secondary border-0 text-light" 
+                id="description" 
+                name="description" 
+                rows="3"
+              ><%= playlist.description %></textarea>
             </div>
             
-            <div class="mb-3">
+            <div class="mb-4">
               <label for="coverImage" class="form-label">Cover Image</label>
-              <input type="file" class="form-control" id="coverImage" name="coverImage" accept="image/*">
-              <div class="form-text">Leave empty to keep the current cover image.</div>
               
-              <div class="mt-2">
-                <p>Current Cover:</p>
-                <img src="<%= playlist.coverImage %>" alt="Current cover" style="max-width: 200px; max-height: 200px;" class="img-thumbnail">
+              <div class="current-cover mb-3">
+                <div class="d-flex align-items-end gap-3">
+                  <img 
+                    src="<%= playlist.coverImage %>" 
+                    alt="Current cover" 
+                    class="rounded cover-preview" 
+                    id="currentCover"
+                  >
+                  <div class="cover-info">
+                    <p class="mb-1 text-purple">Current Cover</p>
+                    <small class="text-muted">Upload a new image to change</small>
+                  </div>
+                </div>
               </div>
+              
+              <input 
+                type="file" 
+                class="form-control bg-dark-secondary border-0 text-light" 
+                id="coverImage" 
+                name="coverImage" 
+                accept="image/*"
+              >
+              <div class="form-text text-muted">Leave empty to keep the current cover image.</div>
             </div>
             
-            <div class="mb-3">
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="isPublic" name="isPublic" value="true" <%= playlist.isPublic ? 'checked' : '' %>>
+            <div class="mb-4 mt-4">
+              <div class="form-check form-switch">
+                <input 
+                  class="form-check-input" 
+                  type="checkbox" 
+                  id="isPublic" 
+                  name="isPublic" 
+                  value="true" 
+                  <%= playlist.isPublic ? 'checked' : '' %>
+                >
                 <label class="form-check-label" for="isPublic">
                   Make this playlist public
                 </label>
               </div>
             </div>
             
-            <div class="d-grid gap-2">
-              <button type="submit" class="btn btn-primary">Update Playlist</button>
-              <a href="/playlists/<%= playlist._id %>" class="btn btn-outline-secondary">Cancel</a>
+            <div class="d-flex gap-3 mt-4">
+              <button type="submit" class="btn btn-purple flex-grow-1">
+                <i class="bi bi-check-circle me-2"></i>Update Playlist
+              </button>
+              <a href="/playlists/<%= playlist._id %>" class="btn btn-outline-light">
+                Cancel
+              </a>
             </div>
           </form>
         </div>
@@ -50,3 +90,141 @@
     </div>
   </div>
 </div>
+
+<style>
+  /* WavePlay Theme Styles */
+  body {
+    background-color: #121212;
+    color: #f8f9fa;
+    font-family: 'Inter', 'Segoe UI', Roboto, Arial, sans-serif;
+  }
+  
+  .waveplay-container {
+    padding-top: 5rem !important;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  
+  .text-purple {
+    color: #9b4dff !important;
+  }
+  
+  .bg-purple {
+    background-color: #9b4dff !important;
+  }
+  
+  .bg-dark-secondary {
+    background-color: #1e1e1e !important;
+  }
+  
+  .btn-purple {
+    background-color: #9b4dff;
+    border-color: #9b4dff;
+    color: white;
+    transition: all 0.2s ease;
+  }
+  
+  .btn-purple:hover, .btn-purple:focus {
+    background-color: #8440e3;
+    border-color: #8440e3;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .card {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  }
+  
+  /* Form control styling */
+  .form-control {
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: 6px;
+  }
+  
+  .form-control:focus {
+    border-color: #9b4dff;
+    box-shadow: 0 0 0 0.25rem rgba(155, 77, 255, 0.25);
+  }
+  
+  /* Form switch styling */
+  .form-switch .form-check-input {
+    width: 3em;
+    height: 1.5em;
+    margin-top: 0.25em;
+  }
+  
+  .form-switch .form-check-input:checked {
+    background-color: #9b4dff;
+    border-color: #9b4dff;
+  }
+  
+  /* Cover image styling */
+  .cover-preview {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+  }
+  
+  .cover-preview:hover {
+    transform: scale(1.05);
+  }
+  
+  /* Button styles */
+  .btn {
+    padding: 0.5rem 1.5rem;
+    font-weight: 500;
+  }
+  
+  .btn-outline-light:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+  }
+</style>
+
+<script>
+  // Preview uploaded image
+  document.addEventListener('DOMContentLoaded', function() {
+    const coverImageInput = document.getElementById('coverImage');
+    const currentCover = document.getElementById('currentCover');
+    
+    // Form validation
+    const forms = document.querySelectorAll('.needs-validation');
+    
+    Array.from(forms).forEach(form => {
+      form.addEventListener('submit', event => {
+        if (!form.checkValidity()) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+        
+        form.classList.add('was-validated');
+      }, false);
+    });
+    
+    // Image preview functionality
+    coverImageInput.addEventListener('change', function() {
+      if (this.files && this.files[0]) {
+        const reader = new FileReader();
+        
+        reader.onload = function(e) {
+          currentCover.src = e.target.result;
+          
+          // Add animation class
+          currentCover.classList.add('updated');
+          setTimeout(() => {
+            currentCover.classList.remove('updated');
+          }, 1000);
+        }
+        
+        reader.readAsDataURL(this.files[0]);
+      }
+    });
+  });
+</script>

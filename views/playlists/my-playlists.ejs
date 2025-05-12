@@ -1,49 +1,267 @@
-<div class="container mt-4">
-  <div class="row mb-4">
-    <div class="col-md-8">
-      <h1>My Playlists</h1>
-    </div>
-    <div class="col-md-4 text-end">
-      <a href="/playlists/create/new" class="btn btn-primary">Create New Playlist</a>
-    </div>
+<div class="waveplay-container">
+  <div class="header-section">
+    <h1 class="text-gradient">My Playlists</h1>
+    <a href="/playlists/create/new" class="btn btn-purple text-white d-flex align-items-center">
+      <i class="fas fa-plus me-2"></i>Create New Playlist
+    </a>
   </div>
 
   <% if (playlists && playlists.length > 0) { %>
-    <div class="row">
+    <div class="playlists-grid">
       <% playlists.forEach(playlist => { %>
-        <div class="col-md-4 mb-4">
-          <div class="card playlist-card">
-            <div class="card-img-container">
-              <img src="<%= playlist.coverImage %>" class="card-img-top playlist-cover" alt="<%= playlist.name %>">
-              <div class="card-img-overlay">
-                <span class="badge <%= playlist.isPublic ? 'bg-success' : 'bg-secondary' %>">
-                  <%= playlist.isPublic ? 'Public' : 'Private' %>
-                </span>
+        <div class="playlist-card">
+          <div class="cover-container">
+            <img src="<%= playlist.coverImage %>" alt="<%= playlist.name %>" class="cover-image">
+            <div class="overlay">
+              <span class="visibility-badge <%= playlist.isPublic ? 'public' : 'private' %>">
+                <i class="fas <%= playlist.isPublic ? 'fa-globe' : 'fa-lock' %>"></i>
+                <%= playlist.isPublic ? 'Public' : 'Private' %>
+              </span>
+              <div class="action-buttons">
+                <a href="/playlists/<%= playlist._id %>" class="btn btn-play">
+                  <i class="fas fa-play"></i>
+                </a>
               </div>
             </div>
-            <div class="card-body">
-              <h5 class="card-title"><%= playlist.name %></h5>
-              <p class="card-text"><%= playlist.description ? playlist.description.substring(0, 100) + (playlist.description.length > 100 ? '...' : '') : 'No description' %></p>
-              <div class="d-flex justify-content-between">
-                <a href="/playlists/<%= playlist._id %>" class="btn btn-playlist">View</a>
-                <div class="btn-group">
-                  <a href="/playlists/<%= playlist._id %>/edit" class="btn btn-outline-secondary btn-sm">Edit</a>
-                  <form action="/playlists/<%= playlist._id %>?_method=DELETE" method="POST" onsubmit="return confirm('Are you sure you want to delete this playlist?');">
-                    <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>
-                  </form>
-                </div>
+          </div>
+          
+          <div class="playlist-info">
+            <h3 class="playlist-title"><%= playlist.name %></h3>
+            <p class="playlist-description">
+              <%= playlist.description ? playlist.description.substring(0, 100) + (playlist.description.length > 100 ? '...' : '') : 'No description' %>
+            </p>
+            
+            <div class="playlist-footer">
+              <span class="song-count">
+                <i class="fas fa-music me-1"></i>
+                <%= playlist.songs.length %> songs
+              </span>
+              
+              <div class="playlist-actions">
+                <a href="/playlists/<%= playlist._id %>/edit" class="btn btn-icon" title="Edit">
+                  <i class="fas fa-edit"></i>
+                </a>
+                <form action="/playlists/<%= playlist._id %>?_method=DELETE" method="POST" 
+                      onsubmit="return confirm('Are you sure you want to delete this playlist?');"
+                      class="d-inline">
+                  <button type="submit" class="btn btn-icon text-danger" title="Delete">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </form>
               </div>
-            </div>
-            <div class="card-footer text-muted">
-              <small><%= playlist.songs.length %> songs</small>
             </div>
           </div>
         </div>
       <% }); %>
     </div>
   <% } else { %>
-    <div class="alert alert-info">
-      <p>You haven't created any playlists yet. <a href="/playlists/create/new">Create your first playlist</a>.</p>
+    <div class="empty-state">
+      <i class="fas fa-music"></i>
+      <h3>No Playlists Yet</h3>
+      <p>Create your first playlist and start collecting your favorite tracks.</p>
+      <a href="/playlists/create/new" class="btn btn-purple mt-3">
+        <i class="fas fa-plus me-2"></i>Create Playlist
+      </a>
     </div>
   <% } %>
 </div>
+
+<style>
+:root {
+  --waveplay-primary: #9b4dff;
+  --waveplay-secondary: #4f46e5;
+  --waveplay-gradient: linear-gradient(135deg, var(--waveplay-primary) 0%, var(--waveplay-secondary) 100%);
+  --waveplay-dark: #121212;
+  --waveplay-dark-lighter: #1E1E1E;
+  --waveplay-border: rgba(208, 197, 197, 0.1);
+}
+body{
+  font-family: 'Inter', sans-serif;
+  background-color: var(--waveplay-dark);
+  
+}
+.waveplay-container {
+  padding: 5rem !important;
+  max-width: 1400px;
+  margin: 0 auto;
+  max-height: min-content;
+}
+
+.header-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.text-gradient {
+  background: var(--waveplay-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: white;
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+
+.playlists-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+.playlist-card {
+  background: var(--waveplay-dark-lighter);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.playlist-card:hover {
+  transform: translateY(-5px);
+}
+
+.cover-container {
+  position: relative;
+  padding-top: 100%;
+}
+
+.cover-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1rem;
+}
+
+.playlist-card:hover .overlay {
+  opacity: 1;
+}
+
+.visibility-badge {
+  background: rgba(0, 0, 0, 0.6);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  align-self: flex-start;
+}
+
+.visibility-badge.public {
+  color: #4ade80;
+}
+
+.visibility-badge.private {
+  color: #94a3b8;
+}
+
+.action-buttons {
+  align-self: center;
+}
+
+.btn-play {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: var(--waveplay-primary);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  transition: transform 0.3s ease;
+}
+
+.btn-play:hover {
+  transform: scale(1.1);
+  background: var(--waveplay-secondary);
+}
+
+.playlist-info {
+  padding: 1.5rem;
+}
+
+.playlist-title {
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+  color: white;
+}
+
+.playlist-description {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+
+.playlist-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 1rem;
+  border-top: 1px solid var(--waveplay-border);
+}
+
+.song-count {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.9rem;
+}
+
+.btn-icon {
+  background: var(--waveplay-primary) !important;
+  border: none;
+  color: rgba(233, 229, 229, 0.877);
+  padding: 0.5rem;
+  transition: color 0.3s ease;
+}
+
+.btn-icon:hover {
+  color: var(--waveplay-primary);
+}
+
+.empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  background: var(--waveplay-dark-lighter);
+  border-radius: 16px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.empty-state i {
+  font-size: 3rem;
+  color: var(--waveplay-primary);
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 768px) {
+  .waveplay-container {
+    padding: 1rem;
+  }
+  
+  .header-section {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+  
+  .playlists-grid {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1rem;
+  }
+}
+</style>

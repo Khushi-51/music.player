@@ -1,46 +1,697 @@
-<header>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <div class="container">
-        <a class="navbar-brand" href="/">
-          <i class="fas fa-music me-2"></i>Music Player
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav me-auto">
-            <li class="nav-item">
-              <a class="nav-link" href="/"><i class="fas fa-home me-1"></i>Home</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/songs"><i class="fas fa-music me-1"></i>Songs</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/playlists"><i class="fas fa-list me-1"></i>Playlists</a>
-            </li>
-          </ul>
-          
-          <div class="d-flex">
-            <% if (locals.user) { %>
-              <div class="dropdown">
-                <button class="btn btn-outline-light dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown">
-                  <i class="fas fa-user me-1"></i><%= user.username %>
-                </button>
-                <ul class="dropdown-menu dropdown-menu-end">
-                  <li><a class="dropdown-item" href="/auth/users/profile"><i class="fas fa-user-circle me-1"></i>Profile</a></li>
-                  <li><a class="dropdown-item" href="/playlists/user/my-playlists"><i class="fas fa-list me-1"></i>My Playlists</a></li>
-                  <li><a class="dropdown-item" href="/songs/upload/new"><i class="fas fa-upload me-1"></i>Upload Song</a></li>
-                  <li><a class="dropdown-item" href="/playlists/create/new"><i class="fas fa-plus me-1"></i>Create Playlist</a></li>
-                  <li><hr class="dropdown-divider"></li>
-                  <li><a class="dropdown-item" href="/auth/logout"><i class="fas fa-sign-out-alt me-1"></i>Logout</a></li>
-                </ul>
+<header class="site-header">
+  <div class="header-container">
+    <!-- Logo and brand -->
+    <a href="/" class="header-logo">
+      <i class="fas fa-waveform-path"></i>
+      <span>WavePlay</span>
+    </a>
+    
+    <!-- Mobile toggle button -->
+    <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle menu">
+      <span class="toggle-line"></span>
+      <span class="toggle-line"></span>
+      <span class="toggle-line"></span>
+    </button>
+    
+    <!-- Navigation section -->
+    <div class="nav-wrapper" id="navWrapper">
+      <nav class="main-nav">
+        <ul class="nav-list">
+          <li class="nav-item">
+            <a href="/" class="nav-link">
+              <i class="fas fa-home"></i>
+              <span>Home</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="/songs" class="nav-link">
+              <i class="fas fa-music"></i>
+              <span>Explore</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="/playlists" class="nav-link">
+              <i class="fas fa-list"></i>
+              <span>Playlists</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+      
+      <!-- Search form -->
+       <!-- Replace the existing search form with this -->
+<div class="search-bar">
+  <div class="search-wrapper">
+    <input 
+      type="text" 
+      id="searchInput"
+      name="q" 
+      placeholder="Search songs..." 
+      class="search-input"
+      autocomplete="off"
+    >
+    <button type="button" class="search-button">
+      <i class="fas fa-search"></i>
+    </button>
+    <div id="searchResults" class="search-results"></div>
+  </div>
+</div>
+     
+      <!-- User section -->
+      <div class="user-section">
+        <% if (locals.user) { %>
+          <div class="user-dropdown">
+            <button class="user-dropdown-toggle" id="userDropdownToggle">
+              <div class="user-avatar">
+                <i class="fas fa-user"></i>
               </div>
-            <% } else { %>
-              <a href="/auth/login" class="btn btn-outline-light me-2"><i class="fas fa-sign-in-alt me-1"></i>Login</a>
-              <a href="/auth/register" class="btn btn-primary"><i class="fas fa-user-plus me-1"></i>Register</a>
-            <% } %>
+              <span class="user-name"><%= user.username %></span>
+              <i class="fas fa-chevron-down dropdown-arrow"></i>
+            </button>
+            
+            <div class="dropdown-menu" id="userDropdownMenu">
+              <a href="/auth/users/profile" class="dropdown-item">
+                <i class="fas fa-user-circle"></i>
+                <span>Profile</span>
+              </a>
+              <a href="/playlists/user/my-playlists" class="dropdown-item">
+                <i class="fas fa-list"></i>
+                <span>My Playlists</span>
+              </a>
+              <a href="/songs/upload/new" class="dropdown-item">
+                <i class="fas fa-upload"></i>
+                <span>Upload Song</span>
+              </a>
+              <a href="/playlists/create/new" class="dropdown-item">
+                <i class="fas fa-plus"></i>
+                <span>Create Playlist</span>
+              </a>
+              <div class="dropdown-divider"></div>
+              <a href="/auth/logout" class="dropdown-item">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+              </a>
+            </div>
           </div>
-        </div>
+        <% } else { %>
+          <div class="auth-buttons">
+            <a href="/auth/login" class="btn btn-secondary">
+              <i class="fas fa-sign-in-alt"></i>
+              <span>Login</span>
+            </a>
+            <a href="/auth/register" class="btn btn-primary">
+              <i class="fas fa-user-plus"></i>
+              <span>Register</span>
+            </a>
+          </div>
+        <% } %>
       </div>
-    </nav>
-  </header>
+    </div>
+  </div>
+</header>
+
+<style>
+  /* Header styles */
+  .site-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    background: rgba(10, 10, 10, 0.95);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  }
+  
+  .header-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 15px 20px;
+    position: relative;
+  }
+  
+  /* Logo styles */
+  .header-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    font-size: 1.5rem;
+    font-weight: 800;
+    background: linear-gradient(45deg, #8E2DE2 0%, #4A00E0 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    z-index: 5;
+  }
+  
+  .header-logo i {
+    font-size: 1.6rem;
+  }
+  
+  /* Mobile toggle button */
+  .mobile-toggle {
+    display: none;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    z-index: 100;
+  }
+  
+  .toggle-line {
+    display: block;
+    width: 25px;
+    height: 2px;
+    margin: 5px 0;
+    background: white;
+    transition: all 0.3s ease;
+  }
+  
+  /* Navigation wrapper */
+  .nav-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex: 1;
+    margin-left: 30px;
+  }
+  
+  /* Main navigation */
+  .main-nav {
+    margin-right: 20px;
+  }
+  
+  .nav-list {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: 10px;
+  }
+  
+  .nav-item {
+    position: relative;
+  }
+  
+  .nav-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    padding: 8px 15px;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    font-weight: 500;
+  }
+  
+  .nav-link i {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.5);
+    transition: all 0.3s ease;
+  }
+  
+  .nav-link:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: white;
+  }
+  
+  .nav-link:hover i {
+    color: #8E2DE2;
+  }
+  
+  .nav-link.active {
+    background: rgba(142, 45, 226, 0.1);
+    color: #8E2DE2;
+  }
+  
+  .nav-link.active i {
+    color: #8E2DE2;
+  }
+  
+  /* Search bar */
+  .search-wrapper {
+    position: relative;
+    width: 250px;
+  }
+  
+  .search-input {
+    width: 100%;
+    padding: 8px 15px;
+    padding-right: 40px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50px;
+    color: white;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+  }
+  
+  .search-input:focus {
+    outline: none;
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(142, 45, 226, 0.5);
+    box-shadow: 0 0 0 2px rgba(142, 45, 226, 0.1);
+  }
+  
+  .search-input::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+  }
+  
+  .search-button {
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    color: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .search-button:hover {
+    color: #8E2DE2;
+  }
+  /* Add these styles inside your existing <style> tag */
+
+/* Search Results Styling */
+.search-results {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: #121212;
+  border-radius: 8px;
+  margin-top: 5px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  z-index: 1000;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.search-result-item {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  text-decoration: none;
+  color: white;
+  transition: background 0.2s ease;
+}
+
+.search-result-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.search-result-item img {
+  width: 40px;  /* Reduced from larger size */
+  height: 40px; /* Reduced from larger size */
+  border-radius: 4px;
+  object-fit: cover; /* Maintains aspect ratio */
+  margin-right: 10px;
+}
+
+.search-result-info {
+  flex: 1;
+}
+
+.search-result-info h4 {
+  margin: 0;
+  font-size: 0.9rem;
+  color: white;
+}
+
+.search-result-info p {
+  margin: 0;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+  
+  /* User section */
+  .user-section {
+    display: flex;
+    align-items: center;
+    z-index: 5;
+  }
+  
+  /* Auth buttons */
+  .auth-buttons {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: none;
+  }
+  
+  .btn-primary {
+    background: linear-gradient(45deg, #8E2DE2 0%, #4A00E0 100%);
+    color: white;
+    box-shadow: 0 4px 10px rgba(142, 45, 226, 0.3);
+  }
+  
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(142, 45, 226, 0.4);
+  }
+  
+  .btn-secondary {
+    background: rgba(255, 255, 255, 0.05);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+  }
+  
+  /* User dropdown */
+  .user-dropdown {
+    position: relative;
+  }
+  
+  .user-dropdown-toggle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    padding: 6px 10px;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .user-dropdown-toggle:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+  
+  .user-avatar {
+    width: 30px;
+    height: 30px;
+    background: linear-gradient(45deg, #8E2DE2 0%, #4A00E0 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+  }
+  
+  .user-name {
+    font-weight: 600;
+    max-width: 120px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .dropdown-arrow {
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.5);
+    transition: transform 0.3s ease;
+  }
+  
+  .user-dropdown.active .dropdown-arrow {
+    transform: rotate(180deg);
+  }
+  
+  /* Update these CSS rules in your existing style */
+.dropdown-menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  background: #121212;
+  border-radius: 8px;
+  min-width: 200px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: all 0.3s ease;
+  z-index: 1000;
+  display: block !important; /* Force display */
+}
+
+.user-dropdown.active .dropdown-menu {
+  visibility: visible;
+  opacity: 1;
+  transform: translateY(0);
+}
+  .dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 15px;
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+  
+  .dropdown-item i {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.5);
+    width: 20px;
+  }
+  
+  .dropdown-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: #8E2DE2;
+  }
+  
+  .dropdown-item:hover i {
+    color: #8E2DE2;
+  }
+  
+  .dropdown-divider {
+    height: 1px;
+    background: rgba(255, 255, 255, 0.05);
+    margin: 5px 0;
+  }
+  
+  /* Responsive styles */
+  @media (max-width: 992px) {
+    .mobile-toggle {
+      display: block;
+    }
+    
+    .nav-wrapper {
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: 80%;
+      max-width: 350px;
+      height: 100vh;
+      background: #121212;
+      flex-direction: column;
+      justify-content: flex-start;
+      padding: 80px 20px 20px;
+      transition: right 0.3s ease;
+      box-shadow: -5px 0 30px rgba(0, 0, 0, 0.5);
+      margin-left: 0;
+      gap: 30px;
+      align-items: flex-start;
+      overflow-y: auto;
+    }
+    
+    .nav-wrapper.active {
+      right: 0;
+    }
+    
+    .main-nav {
+      width: 100%;
+      margin-right: 0;
+    }
+    
+    .nav-list {
+      flex-direction: column;
+      width: 100%;
+    }
+    
+    .nav-link {
+      padding: 12px 15px;
+    }
+    
+    .search-bar {
+      width: 100%;
+      margin: 10px 0;
+    }
+    
+    .search-wrapper {
+      width: 100%;
+    }
+    
+    .user-section {
+      width: 100%;
+      justify-content: center;
+    }
+    
+    .auth-buttons {
+      flex-direction: column;
+      width: 100%;
+      gap: 10px;
+    }
+    
+    .auth-buttons .btn {
+      width: 100%;
+      justify-content: center;
+    }
+    
+    .user-dropdown {
+      width: 100%;
+    }
+    
+    .user-dropdown-toggle {
+      width: 100%;
+      justify-content: space-between;
+    }
+    
+    .dropdown-menu {
+      position: static;
+      width: 100%;
+      opacity: 1;
+      visibility: visible;
+      transform: none;
+      margin-top: 10px;
+      display: none;
+    }
+    
+    .user-dropdown.active .dropdown-menu {
+      display: block;
+    }
+    
+    /* Mobile toggle animation */
+    .mobile-toggle.active .toggle-line:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+    
+    .mobile-toggle.active .toggle-line:nth-child(2) {
+      opacity: 0;
+    }
+    
+    .mobile-toggle.active .toggle-line:nth-child(3) {
+      transform: rotate(-45deg) translate(5px, -5px);
+    }
+  }
+</style>
+<script>
+
+  // Add this to your existing <script> tag
+document.addEventListener('DOMContentLoaded', function() {
+  // ...existing code...
+
+  // Search functionality
+  const searchInput = document.getElementById('searchInput');
+  const searchResults = document.getElementById('searchResults');
+
+  function debounce(func, wait) {
+    let timeout;
+    return function(...args) {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => func.apply(this, args), wait);
+    };
+  }
+
+  const performSearch = debounce(async (query) => {
+    if (query.length < 2) {
+      searchResults.style.display = 'none';
+      return;
+    }
+
+    try {
+      const response = await fetch(`/songs/search?q=${encodeURIComponent(query)}`);
+      const data = await response.json();
+
+      if (data.success && data.data.length > 0) {
+        // Update this part in your existing performSearch function
+searchResults.innerHTML = data.data.map(song => `
+  <a href="/songs/${song._id}" class="search-result-item">
+    <img 
+      src="${song.coverImage}" 
+      alt="${song.title}"
+      onerror="this.src='/images/default-cover.png'"
+    >
+    <div class="search-result-info">
+      <h4>${song.title}</h4>
+      <p>${song.artist}</p>
+    </div>
+  </a>
+`).join('');
+        searchResults.style.display = 'block';
+      } else {
+        searchResults.innerHTML = '<div class="search-result-item">No songs found</div>';
+        searchResults.style.display = 'block';
+      }
+    } catch (error) {
+      console.error('Search error:', error);
+      searchResults.innerHTML = '<div class="search-result-item">Error searching songs</div>';
+      searchResults.style.display = 'block';
+    }
+  }, 300);
+
+  searchInput.addEventListener('input', (e) => performSearch(e.target.value.trim()));
+
+  // Close search results when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
+      searchResults.style.display = 'none';
+    }
+  });
+});
+  // Mobile menu toggle
+  document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.getElementById('mobileToggle');
+    const navWrapper = document.getElementById('navWrapper');
+    
+    if (mobileToggle) {
+      mobileToggle.addEventListener('click', function() {
+        this.classList.toggle('active');
+        navWrapper.classList.toggle('active');
+      });
+    }
+    
+    // User dropdown toggle
+    const userDropdownToggle = document.getElementById('userDropdownToggle');
+    const userDropdownMenu = document.getElementById('userDropdownMenu');
+    
+    if (userDropdownToggle) {
+      userDropdownToggle.addEventListener('click', function(e) {
+        e.stopPropagation();
+        const dropdown = this.closest('.user-dropdown');
+        dropdown.classList.toggle('active');
+      });
+      
+      // Close dropdown when clicking outside
+      document.addEventListener('click', function(e) {
+        const dropdown = document.querySelector('.user-dropdown');
+        if (dropdown && !dropdown.contains(e.target)) {
+          dropdown.classList.remove('active');
+        }
+      });
+    }
+  });
+</script>

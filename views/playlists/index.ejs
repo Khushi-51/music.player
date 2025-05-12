@@ -1,38 +1,410 @@
-<div class="container mt-4">
-  <div class="row mb-4">
-    <div class="col-md-8">
-      <h1>All Playlists</h1>
+<div class="page-container">
+  <div class="content-container">
+    <div class="playlists-header">
+      <div class="header-title">
+        <h1><i class="fas fa-headphones"></i> All Playlists</h1>
+      </div>
+      <% if (user) { %>
+      <div class="header-actions">
+        <a href="/playlists/create/new" class="btn btn-primary">
+          <i class="fas fa-plus"></i> Create Playlist
+        </a>
+      </div>
+      <% } %>
     </div>
-    <% if (user) { %>
-    <div class="col-md-4 text-end">
-      <a href="/playlists/create/new" class="btn btn-primary">Create New Playlist</a>
-    </div>
-    <% } %>
-  </div>
 
-  <% if (playlists && playlists.length > 0) { %>
-    <div class="row">
-      <% playlists.forEach(playlist => { %>
-        <div class="col-md-4 mb-4">
-          <div class="card playlist-card">
-            <img src="<%= playlist.coverImage %>" class="card-img-top playlist-cover" alt="<%= playlist.name %>">
-            <div class="card-body">
-              <h5 class="card-title"><%= playlist.name %></h5>
-              <p class="card-text text-muted">
-                <small>Created by: <%= playlist.user?.username || 'Unknown' %></small>
+    <% if (playlists && playlists.length > 0) { %>
+      <div class="playlists-grid">
+        <% playlists.forEach(playlist => { %>
+          <div class="playlist-card">
+            <div class="playlist-cover-wrapper">
+              <img src="<%= playlist.coverImage %>" class="playlist-cover" alt="<%= playlist.name %>">
+              <div class="playlist-overlay">
+                <a href="/playlists/<%= playlist._id %>" class="btn-play">
+                  <i class="fas fa-play"></i>
+                </a>
+              </div>
+            </div>
+            <div class="playlist-info">
+              <h3 class="playlist-title"><%= playlist.name %></h3>
+              <p class="playlist-creator">
+                <i class="fas fa-user"></i> <%= playlist.user?.username || 'Unknown' %>
               </p>
-              <p class="card-text">
+              <p class="playlist-description">
                 <%= playlist.description ? playlist.description.substring(0, 100) + (playlist.description.length > 100 ? '...' : '') : 'No description' %>
               </p>
-              <a href="/playlists/<%= playlist._id %>" class="btn btn-playlist">View Playlist</a>
+              <a href="/playlists/<%= playlist._id %>" class="btn-view-playlist">
+                <i class="fas fa-headphones"></i> View Playlist
+              </a>
             </div>
           </div>
+        <% }); %>
+      </div>
+    <% } else { %>
+      <div class="empty-state">
+        <div class="empty-icon">
+          <i class="fas fa-music"></i>
         </div>
-      <% }); %>
-    </div>
-  <% } else { %>
-    <div class="alert alert-info">
-      <p>No playlists found. Be the first to create one!</p>
-    </div>
-  <% } %>
+        <h3>No playlists found</h3>
+        <p>Be the first to create an awesome playlist!</p>
+        <% if (user) { %>
+        <a href="/playlists/create/new" class="btn btn-primary">
+          <i class="fas fa-plus"></i> Create Your First Playlist
+        </a>
+        <% } else { %>
+        <a href="/login" class="btn btn-primary">
+          <i class="fas fa-sign-in-alt"></i> Login to Create Playlists
+        </a>
+        <% } %>
+      </div>
+    <% } %>
+  </div>
 </div>
+
+<style>
+:root {
+  --waveplay-primary: #8442ff;
+  --waveplay-secondary: #4f46e5;
+  --waveplay-gradient: linear-gradient(135deg, var(--waveplay-primary) 0%, var(--waveplay-secondary) 100%);
+  --waveplay-dark: #121212;
+  --waveplay-dark-lighter: #1E1E1E;
+  --waveplay-card: #232323;
+  --waveplay-text: #ffffff;
+  --waveplay-text-secondary: rgba(255, 255, 255, 0.7);
+  --waveplay-text-muted: rgba(255, 255, 255, 0.5);
+  --card-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  --card-hover-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
+}
+
+/* Base Styles */
+body {
+  background-color: var(--waveplay-dark);
+  color: var(--waveplay-text);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.page-container {
+  min-height: calc(100vh - 60px);
+  padding: 80px 0 40px; /* Space for fixed header */
+  background-color: var(--waveplay-dark);
+}
+
+.content-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Header Styles */
+.playlists-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.header-title h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.header-title h1 i {
+  color: var(--waveplay-primary);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-primary {
+  background: var(--waveplay-gradient);
+  color: white;
+  box-shadow: 0 4px 12px rgba(132, 66, 255, 0.3);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(132, 66, 255, 0.4);
+}
+
+/* Playlists Grid */
+.playlists-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+.playlist-card {
+  background-color: var(--waveplay-card);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--card-shadow);
+  transition: all 0.3s ease;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.playlist-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--card-hover-shadow);
+}
+
+.playlist-cover-wrapper {
+  position: relative;
+  padding-top: 100%; /* 1:1 Aspect Ratio */
+  overflow: hidden;
+}
+
+.playlist-cover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.playlist-card:hover .playlist-cover {
+  transform: scale(1.05);
+}
+
+.playlist-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.3s ease;
+}
+
+.playlist-card:hover .playlist-overlay {
+  opacity: 1;
+}
+
+.btn-play {
+  width: 50px;
+  height: 50px;
+  background: var(--waveplay-primary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.2rem;
+  transform: scale(0.8);
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.playlist-card:hover .btn-play {
+  transform: scale(1);
+}
+
+.btn-play:hover {
+  background: var(--waveplay-secondary);
+  transform: scale(1.1);
+}
+
+.playlist-info {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.playlist-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0 0 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.playlist-creator {
+  font-size: 0.85rem;
+  color: var(--waveplay-text-secondary);
+  margin: 0 0 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.playlist-description {
+  font-size: 0.9rem;
+  color: var(--waveplay-text-muted);
+  margin: 0 0 20px;
+  line-height: 1.5;
+  flex-grow: 1;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.btn-view-playlist {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--waveplay-text);
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  justify-content: center;
+  margin-top: auto;
+}
+
+.btn-view-playlist:hover {
+  background: rgba(132, 66, 255, 0.2);
+  color: var(--waveplay-primary);
+}
+
+/* Empty State */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 20px;
+  text-align: center;
+  background: var(--waveplay-card);
+  border-radius: 12px;
+}
+
+.empty-icon {
+  width: 80px;
+  height: 80px;
+  background: rgba(132, 66, 255, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+.empty-icon i {
+  font-size: 32px;
+  color: var(--waveplay-primary);
+}
+
+.empty-state h3 {
+  font-size: 1.5rem;
+  margin: 0 0 12px;
+}
+
+.empty-state p {
+  font-size: 1rem;
+  color: var(--waveplay-text-secondary);
+  margin: 0 0 24px;
+}
+
+/* Responsive Styles */
+@media (max-width: 992px) {
+  .playlists-grid {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .playlists-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  
+  .header-actions {
+    width: 100%;
+  }
+  
+  .header-actions .btn {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .playlists-grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 16px;
+  }
+  
+  .playlist-info {
+    padding: 16px;
+  }
+  
+  .playlist-title {
+    font-size: 1rem;
+  }
+  
+  .playlist-description {
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .playlists-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  
+  .playlist-info {
+    padding: 12px;
+  }
+  
+  .btn-view-playlist {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+  }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Add hover effect to play buttons
+  const playButtons = document.querySelectorAll('.btn-play');
+  playButtons.forEach(button => {
+    button.addEventListener('mouseenter', function() {
+      this.innerHTML = '<i class="fas fa-play"></i>';
+    });
+    button.addEventListener('mouseleave', function() {
+      this.innerHTML = '<i class="fas fa-play"></i>';
+    });
+  });
+  
+  // Optional: Add smooth scroll to top when page loads
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  });
+});
+</script>

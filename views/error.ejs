@@ -1,28 +1,149 @@
-<div class="container mt-5">
-  <div class="row justify-content-center">
-    <div class="col-md-8">
-      <div class="card shadow">
-        <div class="card-header bg-danger text-white">
-          <h2><%= title %></h2>
+<div class="error-container">
+  <div class="error-card">
+    <div class="error-header">
+      <h2><%= title %></h2>
+    </div>
+    <div class="error-body">
+      <div class="error-icon">
+        <i class="fas fa-exclamation-circle"></i>
+      </div>
+      <h3 class="error-title"><%= message %></h3>
+      <p class="error-message">Something went wrong. Please try again or contact support if the problem persists.</p>
+      
+      <% if (error && Object.keys(error).length > 0) { %>
+        <div class="error-details">
+          <pre><%= JSON.stringify(error, null, 2) %></pre>
         </div>
-        <div class="card-body text-center">
-          <div class="mb-4">
-            <i class="bi bi-exclamation-triangle-fill text-danger" style="font-size: 4rem;"></i>
-          </div>
-          <h3 class="mb-3"><%= message %></h3>
-          <p>Something went wrong. Please try again or contact support if the problem persists.</p>
-          
-          <% if (error && Object.keys(error).length > 0) { %>
-            <div class="alert alert-danger mt-3 text-start">
-              <pre><%= JSON.stringify(error, null, 2) %></pre>
-            </div>
-          <% } %>
-          
-          <div class="mt-4">
-            <a href="/" class="btn btn-primary">Go to Homepage</a>
-          </div>
-        </div>
+      <% } %>
+      
+      <div class="error-actions">
+        <a href="/" class="btn-home">
+          <i class="fas fa-home me-2"></i>
+          Return to Homepage
+        </a>
       </div>
     </div>
   </div>
 </div>
+
+<style>
+:root {
+  --waveplay-primary: #9b4dff;
+  --waveplay-secondary: #4f46e5;
+  --waveplay-dark: #121212;
+  --waveplay-dark-lighter: #1E1E1E;
+  --waveplay-error: #6a66e9;
+  --waveplay-gradient: linear-gradient(135deg, var(--waveplay-primary) 0%, var(--waveplay-secondary) 100%);
+}
+body{
+  background-color: var(--waveplay-dark-lighter);
+  
+}
+.error-container {
+  margin: 5rem;
+  min-height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+
+.error-card {
+  background: var(--waveplay-dark-lighter);
+  border-radius: 16px;
+  overflow: hidden;
+  width: 100%;
+  max-width: 600px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.error-header {
+  background: var(--waveplay-error);
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.error-header h2 {
+  color: white;
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.error-body {
+  padding: 2.5rem 2rem;
+  text-align: center;
+  color: white;
+}
+
+.error-icon {
+  font-size: 4rem;
+  color: var(--waveplay-error);
+  margin-bottom: 1.5rem;
+}
+
+.error-title {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: white;
+}
+
+.error-message {
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 2rem;
+}
+
+.error-details {
+  background: rgba(75, 110, 171, 0.1);
+  border: 1px solid rgba(255, 77, 77, 0.2);
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 1.5rem 0;
+  text-align: left;
+}
+
+.error-details pre {
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0;
+  white-space: pre-wrap;
+  font-size: 0.875rem;
+}
+
+.btn-home {
+  background: var(--waveplay-gradient);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  border: none;
+  box-shadow: 0 4px 15px rgba(155, 77, 255, 0.3);
+}
+
+.btn-home:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(155, 77, 255, 0.4);
+  color: white;
+  text-decoration: none;
+}
+
+.btn-home:active {
+  transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+  .error-container {
+    padding: 1rem;
+  }
+  
+  .error-body {
+    padding: 1.5rem 1rem;
+  }
+  
+  .error-icon {
+    font-size: 3rem;
+  }
+}}
+</style> 

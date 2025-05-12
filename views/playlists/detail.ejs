@@ -1,10 +1,10 @@
-<div class="container mt-4">
+<div class="container-fluid waveplay-container py-4">
   <div class="row">
     <div class="col-md-4">
-      <div class="card mb-4">
+      <div class="card playlist-card mb-4">
         <img src="<%= playlist.coverImage %>" class="card-img-top playlist-cover" alt="<%= playlist.name %>">
-        <div class="card-body">
-          <h2 class="card-title"><%= playlist.name %></h2>
+        <div class="card-body bg-dark text-light">
+          <h2 class="card-title text-purple"><%= playlist.name %></h2>
           <p class="card-text text-muted">
             <small>Created by: <%= playlist.createdBy.username %></small>
           </p>
@@ -12,7 +12,7 @@
           
           <% if (user && user._id == playlist.createdBy._id) { %>
             <div class="d-flex gap-2 mt-3">
-              <a href="/playlists/<%= playlist._id %>/edit" class="btn btn-sm btn-outline-primary">Edit</a>
+              <a href="/playlists/<%= playlist._id %>/edit" class="btn btn-sm btn-purple">Edit</a>
               <form action="/playlists/<%= playlist._id %>?_method=DELETE" method="POST" onsubmit="return confirm('Are you sure you want to delete this playlist?');">
                 <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
               </form>
@@ -24,11 +24,11 @@
     
     <div class="col-md-8">
       <div class="d-flex justify-content-between align-items-center mb-4">
-        <h3>Songs (<%= playlist.songs.length %>)</h3>
+        <h3 class="text-light">Songs (<%= playlist.songs.length %>)</h3>
         
         <% if (user && user._id == playlist.createdBy._id) { %>
-          <button type="button" class="btn btn-sm btn-outline-success" data-bs-toggle="modal" data-bs-target="#addSongModal">
-            Add Songs
+          <button type="button" class="btn btn-sm btn-purple" data-bs-toggle="modal" data-bs-target="#addSongModal">
+            <i class="bi bi-plus-lg me-1"></i> Add Songs
           </button>
         <% } %>
       </div>
@@ -36,9 +36,9 @@
       <% if (playlist.songs && playlist.songs.length > 0) { %>
         <div class="list-group">
           <% playlist.songs.forEach(song => { %>
-            <div class="list-group-item song-item d-flex justify-content-between align-items-center">
+            <div class="list-group-item song-item d-flex justify-content-between align-items-center bg-dark-secondary text-light mb-2 border-0 rounded">
               <div class="d-flex align-items-center">
-                <img src="<%= song.coverImage %>" alt="<%= song.title %>" class="me-3" style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;">
+                <img src="<%= song.coverImage %>" alt="<%= song.title %>" class="me-3" style="width: 60px; height: 60px; object-fit: cover; border-radius: 4px;">
                 <div>
                   <h5 class="mb-0"><%= song.title %></h5>
                   <small class="text-muted"><%= song.artist %></small>
@@ -46,7 +46,7 @@
               </div>
               
               <div class="d-flex align-items-center">
-                <audio controls class="me-3">
+                <audio controls class="me-3 waveplay-audio">
                   <source src="<%= song.filePath %>" type="audio/mpeg">
                   Your browser does not support the audio element.
                 </audio>
@@ -63,8 +63,8 @@
           <% }); %>
         </div>
       <% } else { %>
-        <div class="alert alert-info">
-          <p>No songs in this playlist yet.</p>
+        <div class="alert bg-dark-secondary text-light border-0">
+          <p class="mb-0"><i class="bi bi-music-note me-2"></i>No songs in this playlist yet.</p>
         </div>
       <% } %>
     </div>
@@ -75,29 +75,34 @@
 <% if (user && user._id == playlist.createdBy._id) { %>
 <div class="modal fade" id="addSongModal" tabindex="-1" aria-labelledby="addSongModalLabel" aria-hidden="true">
   <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="addSongModalLabel">Add Songs to Playlist</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <div class="modal-content bg-dark text-light">
+      <div class="modal-header border-secondary">
+        <h5 class="modal-title text-purple" id="addSongModalLabel">Add Songs to Playlist</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <form id="addSongForm" action="/playlists/<%= playlist._id %>/songs" method="POST">
           <div class="mb-3">
             <label for="songSearch" class="form-label">Search Songs</label>
-            <input type="text" class="form-control" id="songSearch" placeholder="Search by title or artist">
+            <div class="input-group">
+              <span class="input-group-text bg-dark-secondary border-0 text-light">
+                <i class="bi bi-search"></i>
+              </span>
+              <input type="text" class="form-control bg-dark-secondary border-0 text-light" id="songSearch" placeholder="Search by title or artist">
+            </div>
           </div>
           
           <div id="songResults" class="list-group mb-3">
             <!-- Songs will be loaded here via JavaScript -->
-            <div class="text-center p-3">
-              <p>Search for songs to add to your playlist</p>
+            <div class="text-center p-3 bg-light-secondary rounded">
+              <p class="mb-0">Search for songs to add to your playlist</p>
             </div>
           </div>
           
           <input type="hidden" name="songId" id="selectedSongId">
           
           <div class="d-grid">
-            <button type="submit" class="btn btn-primary" id="addSongButton" disabled>Add Selected Song</button>
+            <button type="submit" class="btn btn-purple" id="addSongButton" disabled>Add Selected Song</button>
           </div>
         </form>
       </div>
@@ -117,7 +122,7 @@
       const searchTerm = this.value.trim();
       
       if (searchTerm.length < 2) {
-        songResults.innerHTML = '<div class="text-center p-3"><p>Search for songs to add to your playlist</p></div>';
+        songResults.innerHTML = '<div class="text-center p-3 bg-dark-secondary rounded text-light"><p class="mb-0">Search for songs to add to your playlist</p></div>';
         return;
       }
       
@@ -135,14 +140,14 @@
               
             if (!isInPlaylist) {
               html += `
-                <button type="button" class="list-group-item list-group-item-action song-result" 
+                <button type="button" class="list-group-item list-group-item-action song-result bg-dark-secondary text-light border-0 mb-2 rounded" 
                   data-song-id="${song._id}">
                   <div class="d-flex align-items-center">
                     <img src="${song.coverImage}" alt="${song.title}" class="me-3" 
                       style="width: 40px; height: 40px; object-fit: cover; border-radius: 4px;">
                     <div>
                       <h6 class="mb-0">${song.title}</h6>
-                      <small class="text-muted">${song.artist}</small>
+                      <small class="text-light">${song.artist}</small>
                     </div>
                   </div>
                 </button>
@@ -158,11 +163,11 @@
               btn.addEventListener('click', function() {
                 // Remove active class from all results
                 document.querySelectorAll('.song-result').forEach(el => {
-                  el.classList.remove('active');
+                  el.classList.remove('active', 'bg-purple');
                 });
                 
                 // Add active class to clicked result
-                this.classList.add('active');
+                this.classList.add('active', 'bg-purple');
                 
                 // Set the selected song ID
                 selectedSongId.value = this.dataset.songId;
@@ -172,16 +177,200 @@
               });
             });
           } else {
-            songResults.innerHTML = '<div class="text-center p-3"><p>No songs found or all matching songs are already in the playlist</p></div>';
+            songResults.innerHTML = '<div class="text-center p-3 bg-dark-secondary rounded"><p class="mb-0">No songs found or all matching songs are already in the playlist</p></div>';
           }
         } else {
-          songResults.innerHTML = '<div class="text-center p-3"><p>No songs found</p></div>';
+          songResults.innerHTML = '<div class="text-center p-3 bg-dark-secondary rounded"><p class="mb-0">No songs found</p></div>';
         }
       } catch (error) {
         console.error('Error searching songs:', error);
-        songResults.innerHTML = '<div class="text-center p-3 text-danger"><p>Error searching songs</p></div>';
+        songResults.innerHTML = '<div class="text-center p-3 bg-dark-secondary rounded text-danger"><p class="mb-0">Error searching songs</p></div>';
       }
     });
   });
 </script>
 <% } %>
+
+<style>
+  /* WavePlay Theme Styles */
+  body {
+    background-color: #121212;
+    color: #f8f9fa;
+    font-family: 'Inter', 'Segoe UI', Roboto, Arial, sans-serif;
+
+  }
+  
+  .waveplay-container {
+   padding: 5rem !important;
+    padding-top: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  
+  .text-purple {
+    color: #9b4dff !important;
+  }
+  
+  .bg-purple {
+    background-color: #9b4dff !important;
+  }
+  
+  .bg-dark-secondary {
+    background-color: #1e1e1e !important;
+  }
+  
+  .btn-purple {
+    background-color: #9b4dff;
+    border-color: #9b4dff;
+    color: white;
+  }
+  
+  .btn-purple:hover, .btn-purple:focus {
+    background-color: #8440e3;
+    border-color: #8440e3;
+    color: white;
+  }
+  
+  .playlist-card {
+    background-color: #1e1e1e;
+    border: none;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  .playlist-cover {
+    aspect-ratio: 1/1;
+    object-fit: cover;
+  }
+  
+  /* Custom audio player styling */
+  .waveplay-audio {
+    background-color: #2d2d2d;
+    border-radius: 30px;
+    height: 36px;
+  }
+  
+  .waveplay-audio::-webkit-media-controls-panel {
+    background-color: #2d2d2d;
+  }
+  
+  .waveplay-audio::-webkit-media-controls-play-button {
+    background-color: #9b4dff;
+    border-radius: 50%;
+  }
+
+  /* Form control styling */
+  .form-control:focus {
+    border-color: #9b4dff;
+    box-shadow: 0 0 0 0.25rem rgba(155, 77, 255, 0.25);
+  }
+  
+  /* Song item hover effect */
+  .song-item:hover {
+    transform: translateY(-2px);
+    transition: transform 0.2s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Modal transition */
+  .modal-content {
+    border: none;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  }
+</style>
+<style>
+  /* ...existing styles... */
+
+  /* Search Styling */
+  .input-group {
+    background: #2d2d2d;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .input-group-text {
+    background: transparent;
+    border: none;
+    color: #9b4dff;
+    padding-left: 1rem;
+  }
+
+  #songSearch {
+    background: transparent;
+    border: none;
+    color: #fff;
+    padding: 0.75rem 1rem;
+  }
+
+  #songSearch:focus {
+    box-shadow: none;
+    outline: none;
+  }
+
+  #songSearch::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  /* Search Results Styling */
+  #songResults {
+    max-height: 300px;
+    overflow-y: auto;
+    border-radius: 8px;
+    margin-top: 1rem;
+  }
+
+  .song-result {
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
+    transition: all 0.2s ease;
+  }
+
+  .song-result:hover {
+    background: #2d2d2d !important;
+    transform: translateY(-2px);
+  }
+
+  .song-result.active {
+    background: #9b4dff !important;
+    transform: translateY(-2px);
+  }
+
+  .song-result.active small {
+    color: rgba(102, 134, 193, 0.8) !important;
+  }
+
+  /* Scrollbar Styling for Search Results */
+  #songResults::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  #songResults::-webkit-scrollbar-track {
+    background: #1e1e1e;
+  }
+
+  #songResults::-webkit-scrollbar-thumb {
+    background: #9b4dff;
+    border-radius: 3px;
+  }
+
+  #songResults::-webkit-scrollbar-thumb:hover {
+    background: #8440e3;
+  }
+
+  /* Search Loading State */
+  .search-loading {
+    padding: 2rem;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  /* Empty Search State */
+  .search-empty {
+    padding: 2rem;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.7);
+    background: #2d2d2d;
+    border-radius: 8px;
+  }
+</style>
